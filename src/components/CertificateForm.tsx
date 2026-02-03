@@ -3,6 +3,7 @@ import type { CertificateFormProps } from '../types'
 export default function CertificateForm({
   texts,
   selectedId,
+  onSelect,
   onChangeSelected,
   onAddText,
   onDeleteSelected,
@@ -10,80 +11,128 @@ export default function CertificateForm({
   const selectedText = texts.find(t => t.id === selectedId)
 
   return (
-    <div>
-      <div className="mb-6">
-        <button
-          onClick={onAddText}
-          className="w-full py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm hover:shadow-md"
-        >
-          + Agregar texto
-        </button>
-      </div>
+    <div className="space-y-6">
+      {/* Botón agregar texto */}
+      <button
+        onClick={onAddText}
+        className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-semibold transition-colors"
+      >
+        + Agregar texto
+      </button>
 
-      {/* Editor del texto seleccionado */}
-      {selectedText && (
-        <div className="p-4 bg-sky-50 rounded-md border-2 border-sky-500">
-          <h4 className="mt-0 mb-4 text-[15px] text-sky-900 font-semibold">
-            Editando texto seleccionado
+      {/* Lista de textos agregados */}
+      {texts.length > 0 && (
+        <div className="space-y-2">
+          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            Textos ({texts.length})
           </h4>
-
-          <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Texto
-            </label>
-            <input
-              type="text"
-              value={selectedText.text}
-              onChange={e => onChangeSelected({ text: e.target.value })}
-              className="w-full p-2 border border-sky-200 rounded text-[15px] focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
-            />
+          <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">
+            {texts.map(text => (
+              <button
+                key={text.id}
+                onClick={() => onSelect(text.id)}
+                className={`w-full text-left p-3 rounded-lg border transition-colors ${
+                  selectedId === text.id
+                    ? 'border-gray-900 bg-gray-50'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-3 h-3 rounded-sm flex-shrink-0"
+                    style={{ backgroundColor: text.color }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs font-semibold text-gray-900">
+                      {text.label || 'Sin etiqueta'}
+                    </div>
+                    <div className="text-xs text-gray-500 truncate">
+                      {text.text || 'Texto vacío'}
+                    </div>
+                  </div>
+                  {selectedId === text.id && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-900 flex-shrink-0" />
+                  )}
+                </div>
+              </button>
+            ))}
           </div>
-
-          <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Tamaño (px): {selectedText.fontSize}
-            </label>
-            <input
-              type="range"
-              min="20"
-              max="200"
-              value={selectedText.fontSize}
-              onChange={e =>
-                onChangeSelected({ fontSize: Number(e.target.value) })
-              }
-              className="w-full cursor-pointer"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Color
-            </label>
-            <input
-              type="color"
-              value={selectedText.color}
-              onChange={e => onChangeSelected({ color: e.target.value })}
-              className="w-full h-10 border border-sky-200 rounded cursor-pointer"
-            />
-          </div>
-
-          <button
-            onClick={onDeleteSelected}
-            className="w-full py-2.5 bg-red-500 hover:bg-red-600 text-white rounded text-sm font-semibold transition-colors"
-          >
-            🗑️ Eliminar texto
-          </button>
         </div>
       )}
 
-      {!selectedText && texts.length > 0 && (
-        <p className="text-sm text-slate-600 text-center p-4">
-          Haz click en un texto del canvas para editarlo
-        </p>
+      {/* Editor del texto seleccionado */}
+      {selectedText && (
+        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            Editor
+          </h4>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-gray-700">
+                Etiqueta
+              </label>
+              <input
+                type="text"
+                value={selectedText.label || ''}
+                onChange={e => onChangeSelected({ label: e.target.value })}
+                placeholder="Ej: Nombre, Fecha, Curso..."
+                className="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-gray-700">
+                Texto
+              </label>
+              <input
+                type="text"
+                value={selectedText.text}
+                onChange={e => onChangeSelected({ text: e.target.value })}
+                className="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-gray-700">
+                Tamaño: {selectedText.fontSize}px
+              </label>
+              <input
+                type="range"
+                min="20"
+                max="200"
+                value={selectedText.fontSize}
+                onChange={e =>
+                  onChangeSelected({ fontSize: Number(e.target.value) })
+                }
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-gray-700">
+                Color
+              </label>
+              <input
+                type="color"
+                value={selectedText.color}
+                onChange={e => onChangeSelected({ color: e.target.value })}
+                className="w-full h-10 border border-gray-300 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            <button
+              onClick={onDeleteSelected}
+              className="w-full py-2.5 bg-white hover:bg-gray-50 border border-gray-300 hover:border-red-500 text-gray-700 hover:text-red-600 rounded-lg text-sm font-semibold transition-colors"
+            >
+              Eliminar texto
+            </button>
+          </div>
+        </div>
       )}
 
       {texts.length === 0 && (
-        <p className="text-sm text-slate-600 text-center p-4">
+        <p className="text-sm text-gray-500 text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
           Aún no hay textos. Agrega uno para empezar.
         </p>
       )}

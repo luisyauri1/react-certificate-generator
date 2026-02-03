@@ -32,6 +32,7 @@ export default function CertificateGenerator() {
     const newText: TextElement = {
       id: `text-${Date.now()}`,
       text: 'Nuevo texto',
+      label: 'Sin etiqueta',
       x: 1750, // Centro aprox
       y: 1240,
       fontSize: 60,
@@ -112,6 +113,7 @@ export default function CertificateGenerator() {
             <CertificateForm
               texts={texts}
               selectedId={selectedId}
+              onSelect={setSelectedId}
               onChangeSelected={handleChangeSelected}
               onAddText={handleAddText}
               onDeleteSelected={handleDeleteSelected}

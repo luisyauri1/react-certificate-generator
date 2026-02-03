@@ -2,6 +2,7 @@
 export interface TextElement {
   id: string
   text: string
+  label?: string
   x: number
   y: number
   fontSize: number
@@ -22,6 +23,7 @@ export interface CertificatePreviewProps {
 export interface CertificateFormProps {
   texts: TextElement[]
   selectedId: string | null
+  onSelect: (id: string | null) => void
   onChangeSelected: (updates: Partial<TextElement>) => void
   onAddText: () => void
   onDeleteSelected: () => void
