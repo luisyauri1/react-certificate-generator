@@ -1,26 +1,16 @@
+import Header from '../components/Header'
+
 export default function MainLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <div>
-      <header>
-        <nav>
-          <h1>Certificate Generator</h1>
-          <ul>
-            <li>
-              <a href="#">Generator</a>
-            </li>
-          </ul>
-        </nav>
-      </header>
-
-      <main>{children}</main>
-
-      <footer>
-        <p>&copy; 2026 Certificate Generator. All rights reserved.</p>
-      </footer>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        {children}
+      </main>
     </div>
   )
 }
