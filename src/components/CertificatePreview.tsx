@@ -36,12 +36,8 @@ export default function CertificatePreview({
   const previewHeight = STAGE_HEIGHT * scale
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="mt-0 mb-4 text-xl font-semibold">
-        Vista previa del certificado
-      </h3>
-
-      <div className="border-2 border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+    <div className="p-8">
+      <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
         <Stage
           width={containerWidth}
           height={previewHeight}
@@ -107,11 +103,6 @@ export default function CertificatePreview({
           </Layer>
         </Stage>
       </div>
-
-      <p className="mt-4 text-sm text-gray-500 text-center">
-        💡 Arrastra los textos para posicionarlos. Click para seleccionar y
-        editar.
-      </p>
     </div>
   )
 }

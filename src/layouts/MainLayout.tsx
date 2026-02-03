@@ -6,11 +6,9 @@ export default function MainLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-linear-to-br from-orange-50 via-amber-50 to-orange-100">
+    <div className="h-screen flex flex-col overflow-hidden">
       <Header />
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {children}
-      </main>
+      <main className="flex-1 pt-16">{children}</main>
     </div>
   )
 }

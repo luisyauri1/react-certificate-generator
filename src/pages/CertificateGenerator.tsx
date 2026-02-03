@@ -87,58 +87,58 @@ export default function CertificateGenerator() {
   }
 
   return (
-    <div className="flex gap-8 p-8 min-h-screen bg-gray-100">
-      {/* Panel izquierdo: Controles */}
-      <div className="w-[420px] bg-white p-6 rounded-lg shadow-md h-fit sticky top-8">
-        <h2 className="mt-0 mb-6 text-xl font-semibold">
-          Generador de Certificados
-        </h2>
+    <div className="h-full flex overflow-hidden">
+      {/* Panel izquierdo: Controles - fijo */}
+      <div className="w-[360px] bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
+        <div className="p-6">
+          {/* Upload de imagen */}
+          <div className="mb-6">
+            <label
+              htmlFor="image-upload"
+              className="block mb-2 text-sm font-semibold text-gray-700"
+            >
+              Cargar imagen de fondo
+            </label>
+            <input
+              id="image-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="w-full p-2 border border-gray-300 rounded text-sm"
+            />
+            {imageUrl && (
+              <p className="mt-2 text-sm text-emerald-600">✓ Imagen cargada</p>
+            )}
+          </div>
 
-        {/* Upload de imagen */}
-        <div className="mb-8">
-          <label
-            htmlFor="image-upload"
-            className="block mb-2 font-semibold text-gray-700"
-          >
-            1. Cargar imagen de fondo
-          </label>
-          <input
-            id="image-upload"
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+          {/* Formulario de edición */}
+          <CertificateForm
+            texts={texts}
+            selectedId={selectedId}
+            onChangeSelected={handleChangeSelected}
+            onAddText={handleAddText}
+            onDeleteSelected={handleDeleteSelected}
           />
-          {imageUrl && (
-            <p className="mt-2 text-sm text-emerald-600">✓ Imagen cargada</p>
-          )}
         </div>
 
-        {/* Formulario de edición */}
-        <CertificateForm
-          texts={texts}
-          selectedId={selectedId}
-          onChangeSelected={handleChangeSelected}
-          onAddText={handleAddText}
-          onDeleteSelected={handleDeleteSelected}
-        />
-
-        {/* Botón de exportación */}
-        <button
-          onClick={handleExportPDF}
-          disabled={!imageUrl}
-          className={`w-full py-3.5 rounded-md text-base font-semibold mt-8 transition-colors ${
-            imageUrl
-              ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer'
-              : 'bg-gray-300 text-white cursor-not-allowed'
-          }`}
-        >
-          📥 Exportar PDF (HD)
-        </button>
+        {/* Botón de exportación - sticky al fondo */}
+        <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-gray-50">
+          <button
+            onClick={handleExportPDF}
+            disabled={!imageUrl}
+            className={`w-full py-3 rounded-lg text-sm font-semibold transition-colors ${
+              imageUrl
+                ? 'bg-sky-600 hover:bg-sky-700 text-white cursor-pointer shadow-sm'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            📥 Exportar PDF (HD)
+          </button>
+        </div>
       </div>
 
-      {/* Panel derecho: Canvas preview */}
-      <div className="flex-1">
+      {/* Panel derecho: Canvas preview - centrado */}
+      <div className="flex-1 bg-gray-100 flex items-center justify-center overflow-auto">
         <CertificatePreview
           imageUrl={imageUrl}
           texts={texts}
