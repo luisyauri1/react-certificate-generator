@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Image as KonvaImage, Layer, Stage, Text } from 'react-konva'
+import {
+  Group,
+  Image as KonvaImage,
+  Layer,
+  Rect,
+  Stage,
+  Text,
+} from 'react-konva'
 import type { CertificatePreviewProps } from '../types'
 
 const STAGE_WIDTH = 3508
@@ -45,9 +52,10 @@ export default function CertificatePreview({
           scaleY={scale}
           ref={stageRef}
           onMouseDown={e => {
-            // Deseleccionar si se hace click en el fondo
+            // Deseleccionar si se hace click en el fondo o en la imagen
             const clickedOnEmpty = e.target === e.target.getStage()
-            if (clickedOnEmpty) {
+            const clickedOnImage = e.target.getClassName() === 'Image'
+            if (clickedOnEmpty || clickedOnImage) {
               onSelect(null)
             }
           }}
@@ -78,28 +86,69 @@ export default function CertificatePreview({
             )}
 
             {/* Textos editables */}
-            {texts.map(textItem => (
-              <Text
-                key={textItem.id}
-                text={textItem.text}
-                x={textItem.x}
-                y={textItem.y}
-                fontSize={textItem.fontSize}
-                fill={textItem.color}
-                draggable
-                onClick={() => onSelect(textItem.id)}
-                onTap={() => onSelect(textItem.id)}
-                onDragEnd={e => {
-                  onUpdatePosition(textItem.id, e.target.x(), e.target.y())
-                }}
-                // Estilo visual para el seleccionado
-                stroke={selectedId === textItem.id ? '#0ea5e9' : undefined}
-                strokeWidth={selectedId === textItem.id ? 3 : 0}
-                shadowColor={selectedId === textItem.id ? '#0ea5e9' : undefined}
-                shadowBlur={selectedId === textItem.id ? 10 : 0}
-                shadowOpacity={selectedId === textItem.id ? 0.5 : 0}
-              />
-            ))}
+            {texts.map(textItem => {
+              const isSelected = selectedId === textItem.id
+
+              return (
+                <Group
+                  key={textItem.id}
+                  x={textItem.x}
+                  y={textItem.y}
+                  draggable
+                  onClick={() => onSelect(textItem.id)}
+                  onTap={() => onSelect(textItem.id)}
+                  onDragEnd={e => {
+                    onUpdatePosition(textItem.id, e.target.x(), e.target.y())
+                  }}
+                >
+                  {/* Texto */}
+                  <Text
+                    text={textItem.text}
+                    fontSize={textItem.fontSize}
+                    fill={textItem.color}
+                    ref={node => {
+                      if (node && isSelected) {
+                        // Obtener dimensiones reales del texto
+                        const width = node.width()
+                        const height = node.height()
+                        const padding = 6
+
+                        // Crear contorno con dimensiones exactas
+                        const rect = node
+                          .getLayer()
+                          ?.findOne(`.selection-${textItem.id}`)
+                        if (rect) {
+                          rect.position({ x: -padding, y: -padding })
+                          rect.width(width + padding * 2)
+                          rect.height(height + padding * 2)
+                        }
+                      }
+                    }}
+                  />
+
+                  {/* Contorno cuadrado elegante cuando está seleccionado */}
+                  {isSelected && (
+                    <Rect
+                      name={`selection-${textItem.id}`}
+                      x={0}
+                      y={0}
+                      width={100}
+                      height={50}
+                      stroke="#3b82f6"
+                      strokeWidth={2}
+                      cornerRadius={4}
+                      dash={[10, 5]}
+                      shadowColor="#3b82f6"
+                      shadowBlur={12}
+                      shadowOpacity={0.25}
+                      shadowOffsetX={0}
+                      shadowOffsetY={2}
+                      listening={false}
+                    />
+                  )}
+                </Group>
+              )
+            })}
           </Layer>
         </Stage>
       </div>

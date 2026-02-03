@@ -40,7 +40,7 @@ export default function TemplateUploadButton({
           <div className="flex items-center gap-4">
             {/* Ícono */}
             <div
-              className={`flex-shrink-0 w-11 h-11 rounded-lg flex items-center justify-center ${
+              className={`shrink-0 w-11 h-11 rounded-lg flex items-center justify-center ${
                 hasImage
                   ? 'bg-gray-900 text-white'
                   : 'bg-white border border-gray-200 text-gray-700'
@@ -65,7 +65,7 @@ export default function TemplateUploadButton({
 
             {/* Indicador */}
             {hasImage && (
-              <div className="flex-shrink-0 w-2 h-2 rounded-full bg-emerald-500" />
+              <div className="shrink-0 w-2 h-2 rounded-full bg-emerald-500" />
             )}
           </div>
         </div>

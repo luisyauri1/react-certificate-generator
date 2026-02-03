@@ -92,7 +92,7 @@ export default function CertificateGenerator() {
   return (
     <div className="h-full flex overflow-hidden">
       {/* Panel izquierdo: Controles - fijo */}
-      <div className="w-90 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
+      <div className="w-64 lg:w-72 xl:w-80 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
         <div className="p-6 space-y-6">
           {/* Sección 1: Upload de imagen */}
           <div className="pb-6 border-b border-gray-200">

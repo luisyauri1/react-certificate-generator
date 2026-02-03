@@ -39,7 +39,7 @@ export default function CertificateForm({
               >
                 <div className="flex items-center gap-2">
                   <div
-                    className="w-3 h-3 rounded-sm flex-shrink-0"
+                    className="w-3 h-3 rounded-sm shrink-0"
                     style={{ backgroundColor: text.color }}
                   />
                   <div className="flex-1 min-w-0">
@@ -51,7 +51,7 @@ export default function CertificateForm({
                     </div>
                   </div>
                   {selectedId === text.id && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-gray-900 flex-shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-900 shrink-0" />
                   )}
                 </div>
               </button>
