@@ -1,82 +1,95 @@
-export default function CertificateForm() {
+import type { CertificateFormProps } from '../types'
+
+export default function CertificateForm({
+  texts,
+  selectedId,
+  onChangeSelected,
+  onAddText,
+  onDeleteSelected,
+}: CertificateFormProps) {
+  const selectedText = texts.find(t => t.id === selectedId)
+
   return (
-    <div className="rounded-xl border border-orange-200 bg-linear-to-br from-white to-orange-50 p-8 shadow-lg">
-      <div className="mb-8 border-l-4 border-orange-500 pl-4">
-        <h3 className="text-xl font-bold text-orange-950">
-          Información del Certificado
-        </h3>
-        <p className="text-sm text-orange-700">
-          Completa los datos para generar tu certificado
-        </p>
-      </div>
-
-      <div className="space-y-5">
-        <div>
-          <label
-            htmlFor="studentName"
-            className="mb-2 block text-sm font-semibold text-orange-900"
-          >
-            Nombre del Estudiante
-          </label>
-          <input
-            type="text"
-            id="studentName"
-            placeholder="Ingresa el nombre completo"
-            className="w-full rounded-lg border-2 border-orange-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder-orange-300 transition-all focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="courseName"
-            className="mb-2 block text-sm font-semibold text-orange-900"
-          >
-            Nombre del Curso
-          </label>
-          <input
-            type="text"
-            id="courseName"
-            placeholder="Ingresa el nombre del curso"
-            className="w-full rounded-lg border-2 border-orange-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder-orange-300 transition-all focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="completionDate"
-            className="mb-2 block text-sm font-semibold text-orange-900"
-          >
-            Fecha de Finalización
-          </label>
-          <input
-            type="date"
-            id="completionDate"
-            className="w-full rounded-lg border-2 border-orange-200 bg-white px-4 py-3 text-sm text-gray-900 transition-all focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="instructorName"
-            className="mb-2 block text-sm font-semibold text-orange-900"
-          >
-            Nombre del Instructor
-          </label>
-          <input
-            type="text"
-            id="instructorName"
-            placeholder="Ingresa el nombre del instructor"
-            className="w-full rounded-lg border-2 border-orange-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder-orange-300 transition-all focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
-          />
-        </div>
-
+    <div>
+      <div className="mb-6">
+        <label className="block mb-2 font-semibold text-gray-700">
+          2. Agregar y editar textos
+        </label>
         <button
-          type="button"
-          className="w-full rounded-lg bg-linear-to-r from-orange-600 to-orange-500 px-6 py-3.5 text-base font-semibold text-white shadow-md transition-all hover:from-orange-700 hover:to-orange-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+          onClick={onAddText}
+          className="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-[15px] font-semibold transition-colors"
         >
-          Generar Certificado
+          + Agregar texto
         </button>
       </div>
+
+      {/* Editor del texto seleccionado */}
+      {selectedText && (
+        <div className="p-4 bg-sky-50 rounded-md border-2 border-sky-500">
+          <h4 className="mt-0 mb-4 text-[15px] text-sky-900 font-semibold">
+            Editando texto seleccionado
+          </h4>
+
+          <div className="mb-4">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Texto
+            </label>
+            <input
+              type="text"
+              value={selectedText.text}
+              onChange={e => onChangeSelected({ text: e.target.value })}
+              className="w-full p-2 border border-sky-200 rounded text-[15px] focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Tamaño (px): {selectedText.fontSize}
+            </label>
+            <input
+              type="range"
+              min="20"
+              max="200"
+              value={selectedText.fontSize}
+              onChange={e =>
+                onChangeSelected({ fontSize: Number(e.target.value) })
+              }
+              className="w-full cursor-pointer"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Color
+            </label>
+            <input
+              type="color"
+              value={selectedText.color}
+              onChange={e => onChangeSelected({ color: e.target.value })}
+              className="w-full h-10 border border-sky-200 rounded cursor-pointer"
+            />
+          </div>
+
+          <button
+            onClick={onDeleteSelected}
+            className="w-full py-2.5 bg-red-500 hover:bg-red-600 text-white rounded text-sm font-semibold transition-colors"
+          >
+            🗑️ Eliminar texto
+          </button>
+        </div>
+      )}
+
+      {!selectedText && texts.length > 0 && (
+        <p className="text-sm text-slate-600 text-center p-4">
+          Haz click en un texto del canvas para editarlo
+        </p>
+      )}
+
+      {texts.length === 0 && (
+        <p className="text-sm text-slate-600 text-center p-4">
+          Aún no hay textos. Agrega uno para empezar.
+        </p>
+      )}
     </div>
   )
 }
