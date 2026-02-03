@@ -3,6 +3,7 @@ import type { Stage as KonvaStage } from 'konva/lib/Stage'
 import { useRef, useState } from 'react'
 import CertificateForm from '../components/CertificateForm'
 import CertificatePreview from '../components/CertificatePreview'
+import TemplateUploadButton from '../components/TemplateUploadButton'
 import type { TextElement } from '../types'
 
 export default function CertificateGenerator() {
@@ -93,28 +94,13 @@ export default function CertificateGenerator() {
         <div className="p-6 space-y-6">
           {/* Sección 1: Upload de imagen */}
           <div className="pb-6 border-b border-gray-200">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide">
-                Paso 1: Plantilla
-              </h3>
-              {imageUrl && (
-                <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
-                  ✓ Cargada
-                </span>
-              )}
-            </div>
-            <input
-              id="image-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="w-full p-2.5 border border-gray-300 rounded-lg text-sm hover:border-sky-400 transition-colors cursor-pointer"
+            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
+              Paso 1: Plantilla
+            </h3>
+            <TemplateUploadButton
+              onImageUpload={handleImageUpload}
+              hasImage={!!imageUrl}
             />
-            {!imageUrl && (
-              <p className="mt-2 text-xs text-gray-500">
-                Sube una imagen de fondo para tu certificado
-              </p>
-            )}
           </div>
 
           {/* Sección 2: Formulario de edición */}
@@ -133,19 +119,17 @@ export default function CertificateGenerator() {
         </div>
 
         {/* Botón de exportación - sticky al fondo */}
-        <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-gradient-to-b from-white to-gray-50">
+        <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-white">
           <button
             onClick={handleExportPDF}
             disabled={!imageUrl}
-            className={`w-full py-3.5 rounded-lg text-sm font-bold transition-all ${
+            className={`w-full py-3 rounded-lg text-sm font-semibold transition-colors ${
               imageUrl
-                ? 'bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-700 hover:to-sky-600 text-white cursor-pointer shadow-md hover:shadow-lg'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                ? 'bg-gray-900 hover:bg-gray-800 text-white'
+                : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
             }`}
           >
-            {imageUrl
-              ? '📥 Exportar Certificado (HD)'
-              : '⏸️ Carga una plantilla primero'}
+            {imageUrl ? 'Exportar certificado' : 'Carga una plantilla primero'}
           </button>
         </div>
       </div>
