@@ -3,6 +3,7 @@ import type { Stage as KonvaStage } from 'konva/lib/Stage'
 import { useRef, useState } from 'react'
 import CertificateForm from '../components/CertificateForm'
 import CertificatePreview from '../components/CertificatePreview'
+import EmptyState from '../components/EmptyState'
 import TemplateUploadButton from '../components/TemplateUploadButton'
 import type { TextElement } from '../types'
 
@@ -90,7 +91,7 @@ export default function CertificateGenerator() {
   return (
     <div className="h-full flex overflow-hidden">
       {/* Panel izquierdo: Controles - fijo */}
-      <div className="w-[360px] bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
+      <div className="w-90 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
         <div className="p-6 space-y-6">
           {/* Sección 1: Upload de imagen */}
           <div className="pb-6 border-b border-gray-200">
@@ -146,32 +147,7 @@ export default function CertificateGenerator() {
             stageRef={stageRef}
           />
         ) : (
-          <div className="text-center px-8 max-w-md">
-            <div className="bg-white rounded-2xl p-12 shadow-lg border-2 border-dashed border-gray-300">
-              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-sky-100 to-sky-200 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-10 h-10 text-sky-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-              </div>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">
-                Comienza con tu plantilla
-              </h2>
-              <p className="text-sm text-gray-500 leading-relaxed">
-                Sube una imagen de fondo en el panel izquierdo para empezar a
-                diseñar tu certificado
-              </p>
-            </div>
-          </div>
+          <EmptyState />
         )}
       </div>
     </div>
