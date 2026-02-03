@@ -1,10 +1,9 @@
 import { jsPDF } from 'jspdf'
 import type { Stage as KonvaStage } from 'konva/lib/Stage'
 import { useRef, useState } from 'react'
-import CertificateForm from '../components/CertificateForm'
 import CertificatePreview from '../components/CertificatePreview'
 import EmptyState from '../components/EmptyState'
-import TemplateUploadButton from '../components/TemplateUploadButton'
+import Sidebar from '../components/Sidebar'
 import type { TextElement } from '../types'
 
 export default function CertificateGenerator() {
@@ -91,51 +90,18 @@ export default function CertificateGenerator() {
 
   return (
     <div className="h-full flex overflow-hidden">
-      {/* Panel izquierdo: Controles - fijo */}
-      <div className="w-64 lg:w-72 xl:w-80 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
-        <div className="p-6 space-y-6">
-          {/* Sección 1: Upload de imagen */}
-          <div className="pb-6 border-b border-gray-200">
-            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
-              Paso 1: Plantilla
-            </h3>
-            <TemplateUploadButton
-              onImageUpload={handleImageUpload}
-              hasImage={!!imageUrl}
-            />
-          </div>
-
-          {/* Sección 2: Formulario de edición */}
-          <div className="pb-6">
-            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
-              Paso 2: Textos
-            </h3>
-            <CertificateForm
-              texts={texts}
-              selectedId={selectedId}
-              onSelect={setSelectedId}
-              onChangeSelected={handleChangeSelected}
-              onAddText={handleAddText}
-              onDeleteSelected={handleDeleteSelected}
-            />
-          </div>
-        </div>
-
-        {/* Botón de exportación - sticky al fondo */}
-        <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-white">
-          <button
-            onClick={handleExportPDF}
-            disabled={!imageUrl}
-            className={`w-full py-3 rounded-lg text-sm font-semibold transition-colors ${
-              imageUrl
-                ? 'bg-gray-900 hover:bg-gray-800 text-white'
-                : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
-            }`}
-          >
-            {imageUrl ? 'Exportar certificado' : 'Carga una plantilla primero'}
-          </button>
-        </div>
-      </div>
+      {/* Panel izquierdo: Controles */}
+      <Sidebar
+        imageUrl={imageUrl}
+        texts={texts}
+        selectedId={selectedId}
+        onImageUpload={handleImageUpload}
+        onSelect={setSelectedId}
+        onChangeSelected={handleChangeSelected}
+        onAddText={handleAddText}
+        onDeleteSelected={handleDeleteSelected}
+        onExport={handleExportPDF}
+      />
 
       {/* Panel derecho: Canvas preview - centrado */}
       <div className="flex-1 bg-gray-100 flex items-center justify-center overflow-auto">
