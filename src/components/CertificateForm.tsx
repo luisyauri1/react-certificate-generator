@@ -12,12 +12,9 @@ export default function CertificateForm({
   return (
     <div>
       <div className="mb-6">
-        <label className="block mb-2 font-semibold text-gray-700">
-          2. Agregar y editar textos
-        </label>
         <button
           onClick={onAddText}
-          className="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-[15px] font-semibold transition-colors"
+          className="w-full py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm hover:shadow-md"
         >
           + Agregar texto
         </button>

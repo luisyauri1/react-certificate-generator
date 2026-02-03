@@ -90,63 +90,105 @@ export default function CertificateGenerator() {
     <div className="h-full flex overflow-hidden">
       {/* Panel izquierdo: Controles - fijo */}
       <div className="w-[360px] bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
-        <div className="p-6">
-          {/* Upload de imagen */}
-          <div className="mb-6">
-            <label
-              htmlFor="image-upload"
-              className="block mb-2 text-sm font-semibold text-gray-700"
-            >
-              Cargar imagen de fondo
-            </label>
+        <div className="p-6 space-y-6">
+          {/* Sección 1: Upload de imagen */}
+          <div className="pb-6 border-b border-gray-200">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide">
+                Paso 1: Plantilla
+              </h3>
+              {imageUrl && (
+                <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
+                  ✓ Cargada
+                </span>
+              )}
+            </div>
             <input
               id="image-upload"
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
+              className="w-full p-2.5 border border-gray-300 rounded-lg text-sm hover:border-sky-400 transition-colors cursor-pointer"
             />
-            {imageUrl && (
-              <p className="mt-2 text-sm text-emerald-600">✓ Imagen cargada</p>
+            {!imageUrl && (
+              <p className="mt-2 text-xs text-gray-500">
+                Sube una imagen de fondo para tu certificado
+              </p>
             )}
           </div>
 
-          {/* Formulario de edición */}
-          <CertificateForm
-            texts={texts}
-            selectedId={selectedId}
-            onChangeSelected={handleChangeSelected}
-            onAddText={handleAddText}
-            onDeleteSelected={handleDeleteSelected}
-          />
+          {/* Sección 2: Formulario de edición */}
+          <div className="pb-6">
+            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
+              Paso 2: Textos
+            </h3>
+            <CertificateForm
+              texts={texts}
+              selectedId={selectedId}
+              onChangeSelected={handleChangeSelected}
+              onAddText={handleAddText}
+              onDeleteSelected={handleDeleteSelected}
+            />
+          </div>
         </div>
 
         {/* Botón de exportación - sticky al fondo */}
-        <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-gray-50">
+        <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-gradient-to-b from-white to-gray-50">
           <button
             onClick={handleExportPDF}
             disabled={!imageUrl}
-            className={`w-full py-3 rounded-lg text-sm font-semibold transition-colors ${
+            className={`w-full py-3.5 rounded-lg text-sm font-bold transition-all ${
               imageUrl
-                ? 'bg-sky-600 hover:bg-sky-700 text-white cursor-pointer shadow-sm'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ? 'bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-700 hover:to-sky-600 text-white cursor-pointer shadow-md hover:shadow-lg'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >
-            📥 Exportar PDF (HD)
+            {imageUrl
+              ? '📥 Exportar Certificado (HD)'
+              : '⏸️ Carga una plantilla primero'}
           </button>
         </div>
       </div>
 
       {/* Panel derecho: Canvas preview - centrado */}
       <div className="flex-1 bg-gray-100 flex items-center justify-center overflow-auto">
-        <CertificatePreview
-          imageUrl={imageUrl}
-          texts={texts}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-          onUpdatePosition={handleUpdatePosition}
-          stageRef={stageRef}
-        />
+        {imageUrl ? (
+          <CertificatePreview
+            imageUrl={imageUrl}
+            texts={texts}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+            onUpdatePosition={handleUpdatePosition}
+            stageRef={stageRef}
+          />
+        ) : (
+          <div className="text-center px-8 max-w-md">
+            <div className="bg-white rounded-2xl p-12 shadow-lg border-2 border-dashed border-gray-300">
+              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-sky-100 to-sky-200 rounded-full flex items-center justify-center">
+                <svg
+                  className="w-10 h-10 text-sky-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">
+                Comienza con tu plantilla
+              </h2>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                Sube una imagen de fondo en el panel izquierdo para empezar a
+                diseñar tu certificado
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

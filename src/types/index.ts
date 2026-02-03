@@ -26,3 +26,8 @@ export interface CertificateFormProps {
   onAddText: () => void
   onDeleteSelected: () => void
 }
+
+// Props para CertificateTemplateSelector
+export interface CertificateTemplateSelectorProps {
+  onTemplateLoad: (imageUrl: string) => void
+}
