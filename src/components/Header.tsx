@@ -9,7 +9,7 @@ export default function Header() {
       <div className="h-full flex items-center justify-between px-6">
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-3 group transition-opacity hover:opacity-80"
+          className="flex cursor-pointer items-center gap-3 group transition-opacity hover:opacity-80"
         >
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-600 transition-all group-hover:bg-orange-500">
             <Award className="h-4 w-4 text-white" strokeWidth={2.5} />
