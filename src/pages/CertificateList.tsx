@@ -1,5 +1,3 @@
-import { jsPDF } from 'jspdf'
-import Konva from 'konva'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import CertificateListContent from '../components/CertificateListContent'
@@ -9,16 +7,17 @@ import ExcelModal from '../components/ExcelModal'
 import Modal from '../components/Modal'
 import TemplateModal from '../components/TemplateModal'
 import { useCertificates } from '../contexts/CertificateContext'
+import { useDownloadCertificate } from '../hooks/useDownloadCertificate'
 import type { Certificate } from '../types'
 
 export default function CertificateList() {
   const navigate = useNavigate()
   const { certificates, globalTemplate, addCertificate, deleteCertificate } =
     useCertificates()
+  const { download: downloadCertificate } = useDownloadCertificate()
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
   const [isExcelModalOpen, setIsExcelModalOpen] = useState(false)
 
-  // Crear nuevo certificado
   const handleCreateNew = () => {
     const newCertificate: Certificate = {
       id: `cert-${Date.now()}`,
@@ -31,11 +30,9 @@ export default function CertificateList() {
 
     addCertificate(newCertificate)
 
-    // Navegar al editor del nuevo certificado
     navigate(`/grupo/${newCertificate.id}`)
   }
 
-  // Eliminar certificado
   const handleDelete = (id: string, e: React.MouseEvent) => {
     e.stopPropagation()
 
@@ -44,94 +41,19 @@ export default function CertificateList() {
     }
   }
 
-  // Descargar certificado individual
   const handleDownload = async (
     certificate: Certificate,
     e: React.MouseEvent
   ) => {
     e.stopPropagation()
-
-    if (!certificate.imageUrl) {
-      alert('Este certificado no tiene plantilla')
-      return
-    }
-
-    try {
-      // Crear canvas temporal con Konva
-      const stage = new Konva.Stage({
-        container: document.createElement('div'),
-        width: 3508,
-        height: 2480,
-      })
-
-      const layer = new Konva.Layer()
-      stage.add(layer)
-
-      // Cargar imagen de fondo
-      const imageObj = document.createElement('img')
-      imageObj.crossOrigin = 'Anonymous'
-
-      await new Promise<void>((resolve, reject) => {
-        imageObj.onload = () => resolve()
-        imageObj.onerror = () => reject(new Error('Error al cargar imagen'))
-        imageObj.src = certificate.imageUrl!
-      })
-
-      const bgImage = new Konva.Image({
-        x: 0,
-        y: 0,
-        image: imageObj as HTMLImageElement,
-        width: 3508,
-        height: 2480,
-      })
-      layer.add(bgImage)
-
-      // Agregar textos
-      certificate.texts.forEach(textElement => {
-        const text = new Konva.Text({
-          x: textElement.x,
-          y: textElement.y,
-          text: textElement.text,
-          fontSize: textElement.fontSize,
-          fill: textElement.color,
-          align: 'center',
-          offsetX: 0,
-        })
-        layer.add(text)
-      })
-
-      layer.draw()
-
-      // Generar PDF
-      const dataURL = stage.toDataURL({
-        pixelRatio: 1.5, // Reducido para menor tamaño
-        mimeType: 'image/jpeg',
-        quality: 0.85, // Compresión JPEG
-      })
-
-      const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'px',
-        format: [3508, 2480],
-      })
-
-      pdf.addImage(dataURL, 'JPEG', 0, 0, 3508, 2480)
-      pdf.save(`${certificate.name}.pdf`)
-
-      stage.destroy()
-    } catch (error) {
-      console.error('Error al descargar certificado:', error)
-      alert('Error al descargar el certificado')
-    }
+    await downloadCertificate(certificate)
   }
 
-  // Navegar a editar
   const handleEdit = (id: string, e: React.MouseEvent) => {
     e.stopPropagation()
     navigate(`/grupo/${id}`)
   }
 
-  // Formatear fecha
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return new Intl.DateTimeFormat('es-ES', {

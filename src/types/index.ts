@@ -10,3 +10,4 @@ export type { CertificateTemplateSelectorProps } from './CertificateTemplateSele
 export type { GlobalActionsProps } from './GlobalActionsProps'
 export type { ModeCardProps } from './ModeCardProps'
 export type { TextElement } from './TextElement'
+export type { UseDownloadCertificateReturn } from './UseDownloadCertificateReturn'
