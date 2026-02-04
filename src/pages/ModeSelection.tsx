@@ -5,13 +5,13 @@ export default function ModeSelection() {
   const navigate = useNavigate()
 
   return (
-    <div className="h-full flex items-center justify-center bg-gray-50 p-8">
+    <div className="h-full flex items-center justify-center p-8">
       <div className="max-w-4xl w-full">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">
+          <h1 className="text-3xl font-bold text-white mb-3">
             ¿Cómo deseas generar tus certificados?
           </h1>
-          <p className="text-base text-gray-500">
+          <p className="text-base text-blue-200/60">
             Elige la opción que mejor se adapte a tus necesidades
           </p>
         </div>
@@ -20,20 +20,20 @@ export default function ModeSelection() {
           {/* Opción Individual */}
           <button
             onClick={() => navigate('/individual')}
-            className="group bg-white border-2 border-gray-200 rounded-xl p-8 hover:border-gray-900 hover:shadow-lg transition-all duration-200 text-left"
+            className="group bg-slate-900/50 backdrop-blur-sm border border-blue-500/20 rounded-xl p-8 hover:border-blue-500/50 hover:bg-slate-900/70 transition-all duration-300 text-left"
           >
             <div className="flex flex-col items-center text-center gap-4">
-              <div className="w-16 h-16 bg-gray-100 group-hover:bg-gray-900 rounded-lg flex items-center justify-center transition-colors">
+              <div className="w-16 h-16 bg-blue-600/20 group-hover:bg-blue-600 rounded-lg flex items-center justify-center transition-all duration-300">
                 <FileText
-                  className="w-8 h-8 text-gray-600 group-hover:text-white transition-colors"
+                  className="w-8 h-8 text-blue-400 group-hover:text-white transition-colors"
                   strokeWidth={1.5}
                 />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   Individual
                 </h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <p className="text-sm text-blue-200/60 leading-relaxed">
                   Crea un certificado único con tus propios datos
                 </p>
               </div>
@@ -43,20 +43,20 @@ export default function ModeSelection() {
           {/* Opción Grupal */}
           <button
             onClick={() => navigate('/grupo')}
-            className="group bg-white border-2 border-gray-200 rounded-xl p-8 hover:border-gray-900 hover:shadow-lg transition-all duration-200 text-left"
+            className="group bg-slate-900/50 backdrop-blur-sm border border-blue-500/20 rounded-xl p-8 hover:border-blue-500/50 hover:bg-slate-900/70 transition-all duration-300 text-left"
           >
             <div className="flex flex-col items-center text-center gap-4">
-              <div className="w-16 h-16 bg-gray-100 group-hover:bg-gray-900 rounded-lg flex items-center justify-center transition-colors">
+              <div className="w-16 h-16 bg-blue-600/20 group-hover:bg-blue-600 rounded-lg flex items-center justify-center transition-all duration-300">
                 <Users
-                  className="w-8 h-8 text-gray-600 group-hover:text-white transition-colors"
+                  className="w-8 h-8 text-blue-400 group-hover:text-white transition-colors"
                   strokeWidth={1.5}
                 />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   Grupal
                 </h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <p className="text-sm text-blue-200/60 leading-relaxed">
                   Agrega múltiples personas manualmente o importa un archivo
                   Excel
                 </p>
@@ -66,7 +66,7 @@ export default function ModeSelection() {
         </div>
 
         <div className="mt-8 text-center">
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-blue-300/40">
             Selecciona una opción para comenzar
           </p>
         </div>
