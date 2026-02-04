@@ -13,8 +13,8 @@ export default function ExportButton({
       disabled={disabled}
       className={`w-full py-3 rounded-lg text-sm font-semibold transition-colors ${
         disabled
-          ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
-          : 'bg-gray-900 hover:bg-gray-800 text-white'
+          ? 'bg-slate-800/30 text-orange-400/40 cursor-not-allowed border border-orange-500/20'
+          : 'bg-orange-600 hover:bg-orange-500 text-white'
       }`}
     >
       {disabled ? 'Carga una plantilla primero' : 'Exportar certificado'}

@@ -182,7 +182,7 @@ export default function CertificateDetail() {
   if (!certificate) {
     return (
       <div className="h-full flex items-center justify-center">
-        <p className="text-gray-500">Cargando certificado...</p>
+        <p className="text-orange-300/60 text-lg">Cargando certificado...</p>
       </div>
     )
   }
@@ -190,11 +190,11 @@ export default function CertificateDetail() {
   return (
     <div className="h-full flex flex-col overflow-hidden">
       {/* Header con nombre editable y botones */}
-      <div className="bg-white border-b border-gray-100 px-8 py-5 flex items-center justify-between">
+      <div className="bg-slate-900/50 backdrop-blur-sm border-b border-orange-500/20 px-8 py-5 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <button
             onClick={() => navigate('/grupo')}
-            className="text-gray-400 hover:text-gray-700 transition-colors"
+            className="text-orange-400/60 hover:text-orange-400 transition-colors"
           >
             <ArrowLeft size={18} strokeWidth={1.5} />
           </button>
@@ -206,13 +206,13 @@ export default function CertificateDetail() {
               onChange={handleNameChange}
               onBlur={handleNameBlur}
               onKeyDown={e => e.key === 'Enter' && handleNameBlur()}
-              className="text-base font-light text-gray-800 border-b border-gray-300 focus:outline-none focus:border-gray-500 px-0"
+              className="text-base md:text-lg font-semibold text-white bg-transparent border-b border-orange-500/50 focus:outline-none focus:border-orange-500 px-0"
               autoFocus
             />
           ) : (
             <h1
               onClick={() => setIsEditing(true)}
-              className="text-base font-light text-gray-800 cursor-pointer hover:text-gray-600"
+              className="text-base md:text-lg font-semibold text-white cursor-pointer hover:text-orange-300"
             >
               {certificateName}
             </h1>
@@ -221,22 +221,22 @@ export default function CertificateDetail() {
 
         <div className="flex items-center gap-3">
           {/* Navegación entre certificados */}
-          <div className="flex items-center gap-1 border border-gray-200 rounded overflow-hidden">
+          <div className="flex items-center gap-1 border border-orange-500/30 rounded-lg overflow-hidden bg-slate-800/30">
             <button
               onClick={handlePrevious}
               disabled={!hasPrevious}
-              className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+              className="p-1.5 text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
               title="Certificado anterior"
             >
               <ChevronLeft size={16} strokeWidth={1.5} />
             </button>
-            <div className="px-2 text-xs text-gray-400 border-x border-gray-200">
+            <div className="px-3 text-xs text-orange-300/70 border-x border-orange-500/30">
               {currentIndex + 1} / {certificates.length}
             </div>
             <button
               onClick={handleNext}
               disabled={!hasNext}
-              className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+              className="p-1.5 text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
               title="Siguiente certificado"
             >
               <ChevronRight size={16} strokeWidth={1.5} />
@@ -245,7 +245,7 @@ export default function CertificateDetail() {
 
           <button
             onClick={handleSave}
-            className="flex items-center gap-2 text-xs text-gray-500 hover:text-gray-800 transition-colors border border-gray-200 px-3 py-1.5 rounded hover:border-gray-300"
+            className="flex items-center gap-2 text-sm text-white bg-orange-600 hover:bg-orange-500 transition-colors px-4 py-2 rounded-lg font-medium"
           >
             <Save size={14} strokeWidth={1.5} />
             Guardar
@@ -267,7 +267,7 @@ export default function CertificateDetail() {
           onExport={handleExportPDF}
         />
 
-        <div className="flex-1 bg-gray-100 flex items-center justify-center overflow-auto">
+        <div className="flex-1 bg-slate-900 flex items-center justify-center overflow-auto">
           {imageUrl ? (
             <CertificatePreview
               imageUrl={imageUrl}

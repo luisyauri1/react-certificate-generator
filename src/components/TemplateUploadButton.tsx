@@ -32,8 +32,8 @@ export default function TemplateUploadButton({
         onClick={handleClick}
         className={`w-full rounded-lg border transition-all duration-200 ${
           hasImage
-            ? 'border-gray-200 bg-white hover:border-gray-300'
-            : 'border-dashed border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-white'
+            ? 'border-orange-500/30 bg-slate-800/50 hover:border-orange-500/50'
+            : 'border-dashed border-orange-500/30 bg-slate-800/30 hover:border-orange-500/50 hover:bg-slate-800/50'
         }`}
       >
         <div className="p-5">
@@ -42,8 +42,8 @@ export default function TemplateUploadButton({
             <div
               className={`shrink-0 w-11 h-11 rounded-lg flex items-center justify-center ${
                 hasImage
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-white border border-gray-200 text-gray-700'
+                  ? 'bg-orange-600 text-white'
+                  : 'bg-slate-700/50 border border-orange-500/30 text-orange-400'
               }`}
             >
               {hasImage ? (
@@ -55,17 +55,17 @@ export default function TemplateUploadButton({
 
             {/* Texto */}
             <div className="flex-1 text-left">
-              <h4 className="text-sm font-semibold text-gray-900 mb-0.5">
+              <h4 className="text-sm font-semibold text-white mb-0.5">
                 {hasImage ? 'Plantilla cargada' : 'Cargar plantilla'}
               </h4>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-orange-200/60">
                 {hasImage ? 'Click para cambiar' : 'JPG o PNG, máx 5MB'}
               </p>
             </div>
 
             {/* Indicador */}
             {hasImage && (
-              <div className="shrink-0 w-2 h-2 rounded-full bg-emerald-500" />
+              <div className="shrink-0 w-2 h-2 rounded-full bg-green-500" />
             )}
           </div>
         </div>

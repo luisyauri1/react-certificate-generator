@@ -27,11 +27,11 @@ export default function Sidebar({
   onExport,
 }: SidebarProps) {
   return (
-    <div className="w-64 lg:w-72 xl:w-80 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
+    <div className="w-64 lg:w-72 xl:w-80 bg-slate-900/50 backdrop-blur-sm border-r border-orange-500/20 flex flex-col overflow-y-auto">
       <div className="p-6 space-y-6">
         {/* Sección 1: Upload de imagen */}
-        <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
+        <div className="pb-6 border-b border-orange-500/20">
+          <h3 className="text-sm font-bold text-white uppercase tracking-wide mb-3">
             Paso 1: Plantilla
           </h3>
           <TemplateUploadButton
@@ -42,7 +42,7 @@ export default function Sidebar({
 
         {/* Sección 2: Formulario de edición */}
         <div className="pb-6">
-          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
+          <h3 className="text-sm font-bold text-white uppercase tracking-wide mb-3">
             Paso 2: Textos
           </h3>
           <CertificateForm
@@ -58,17 +58,17 @@ export default function Sidebar({
       </div>
 
       {/* Botón de exportación - sticky al fondo */}
-      <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-white space-y-3">
+      <div className="mt-auto p-6 pt-4 border-t border-orange-500/20 bg-slate-900/50 space-y-3">
         {/* Etiqueta de estado */}
         <div className="flex items-center justify-center gap-2">
           <div
             className={`w-2 h-2 rounded-full ${
-              imageUrl ? 'bg-green-500' : 'bg-gray-300'
+              imageUrl ? 'bg-green-500' : 'bg-orange-400/50'
             }`}
           />
           <span
             className={`text-xs ${
-              imageUrl ? 'text-green-600' : 'text-gray-400'
+              imageUrl ? 'text-green-400' : 'text-orange-400/60'
             }`}
           >
             {imageUrl ? 'Listo para exportar' : 'Sin plantilla'}

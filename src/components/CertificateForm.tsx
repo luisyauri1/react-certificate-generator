@@ -17,7 +17,7 @@ export default function CertificateForm({
       <button
         onClick={onAddText}
         disabled={!hasImage}
-        className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-semibold transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300"
+        className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-sm font-semibold transition-colors disabled:bg-slate-800/30 disabled:text-orange-400/40 disabled:cursor-not-allowed disabled:hover:bg-slate-800/30"
         title={
           !hasImage ? 'Primero carga una plantilla' : 'Agregar nuevo texto'
         }
@@ -28,7 +28,7 @@ export default function CertificateForm({
       {/* Lista de textos agregados */}
       {texts.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+          <h4 className="text-xs font-semibold text-orange-300/70 uppercase tracking-wide">
             Textos ({texts.length})
           </h4>
           <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">
@@ -38,8 +38,8 @@ export default function CertificateForm({
                 onClick={() => onSelect(text.id)}
                 className={`w-full text-left p-3 rounded-lg border transition-colors ${
                   selectedId === text.id
-                    ? 'border-gray-900 bg-gray-50'
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
+                    ? 'border-orange-500/50 bg-orange-500/10'
+                    : 'border-orange-500/20 bg-slate-800/30 hover:border-orange-500/40 hover:bg-slate-800/50'
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -48,15 +48,15 @@ export default function CertificateForm({
                     style={{ backgroundColor: text.color }}
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-semibold text-gray-900">
+                    <div className="text-xs font-semibold text-white">
                       {text.label || 'Sin etiqueta'}
                     </div>
-                    <div className="text-xs text-gray-500 truncate">
+                    <div className="text-xs text-orange-200/60 truncate">
                       {text.text || 'Texto vacío'}
                     </div>
                   </div>
                   {selectedId === text.id && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-gray-900 shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
                   )}
                 </div>
               </button>
@@ -67,14 +67,14 @@ export default function CertificateForm({
 
       {/* Editor del texto seleccionado */}
       {selectedText && (
-        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
+        <div className="p-4 bg-slate-800/50 rounded-lg border border-orange-500/30">
+          <h4 className="text-xs font-semibold text-orange-300/70 uppercase tracking-wide mb-4">
             Editor
           </h4>
 
           <div className="space-y-4">
             <div>
-              <label className="block mb-1.5 text-sm font-medium text-gray-700">
+              <label className="block mb-1.5 text-sm font-medium text-white">
                 Etiqueta
               </label>
               <input
@@ -82,24 +82,24 @@ export default function CertificateForm({
                 value={selectedText.label || ''}
                 onChange={e => onChangeSelected({ label: e.target.value })}
                 placeholder="Ej: Nombre, Fecha, Curso..."
-                className="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                className="w-full p-2.5 bg-slate-900/50 border border-orange-500/30 rounded-lg text-sm text-white placeholder:text-orange-200/40 focus:border-orange-500/50 focus:outline-none focus:ring-1 focus:ring-orange-500/50"
               />
             </div>
 
             <div>
-              <label className="block mb-1.5 text-sm font-medium text-gray-700">
+              <label className="block mb-1.5 text-sm font-medium text-white">
                 Texto
               </label>
               <input
                 type="text"
                 value={selectedText.text}
                 onChange={e => onChangeSelected({ text: e.target.value })}
-                className="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                className="w-full p-2.5 bg-slate-900/50 border border-orange-500/30 rounded-lg text-sm text-white focus:border-orange-500/50 focus:outline-none focus:ring-1 focus:ring-orange-500/50"
               />
             </div>
 
             <div>
-              <label className="block mb-1.5 text-sm font-medium text-gray-700">
+              <label className="block mb-1.5 text-sm font-medium text-white">
                 Tamaño: {selectedText.fontSize}px
               </label>
               <input
@@ -110,25 +110,25 @@ export default function CertificateForm({
                 onChange={e =>
                   onChangeSelected({ fontSize: Number(e.target.value) })
                 }
-                className="w-full"
+                className="w-full accent-orange-500"
               />
             </div>
 
             <div>
-              <label className="block mb-1.5 text-sm font-medium text-gray-700">
+              <label className="block mb-1.5 text-sm font-medium text-white">
                 Color
               </label>
               <input
                 type="color"
                 value={selectedText.color}
                 onChange={e => onChangeSelected({ color: e.target.value })}
-                className="w-full h-10 border border-gray-300 rounded-lg cursor-pointer"
+                className="w-full h-10 bg-slate-900/50 border border-orange-500/30 rounded-lg cursor-pointer"
               />
             </div>
 
             <button
               onClick={onDeleteSelected}
-              className="w-full py-2.5 bg-white hover:bg-gray-50 border border-gray-300 hover:border-red-500 text-gray-700 hover:text-red-600 rounded-lg text-sm font-semibold transition-colors"
+              className="w-full py-2.5 bg-slate-800/50 hover:bg-red-500/20 border border-orange-500/30 hover:border-red-500/50 text-orange-200 hover:text-red-400 rounded-lg text-sm font-semibold transition-colors"
             >
               Eliminar texto
             </button>
@@ -137,7 +137,7 @@ export default function CertificateForm({
       )}
 
       {texts.length === 0 && (
-        <p className="text-sm text-gray-500 text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <p className="text-sm text-orange-200/60 text-center p-4 bg-slate-800/30 rounded-lg border border-orange-500/20">
           Aún no hay textos. Agrega uno para empezar.
         </p>
       )}

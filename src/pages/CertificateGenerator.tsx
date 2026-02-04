@@ -104,7 +104,7 @@ export default function CertificateGenerator() {
       />
 
       {/* Panel derecho: Canvas preview - centrado */}
-      <div className="flex-1 bg-gray-100 flex items-center justify-center overflow-auto">
+      <div className="flex-1 bg-slate-900 flex items-center justify-center overflow-auto">
         {imageUrl ? (
           <CertificatePreview
             imageUrl={imageUrl}
