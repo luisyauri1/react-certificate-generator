@@ -11,7 +11,7 @@ export default function MainLayout() {
       </div>
 
       <Header />
-      <main className="flex-1 pt-20 relative z-10">
+      <main className="flex-1 pt-20 relative z-10 overflow-y-auto">
         <Outlet />
       </main>
     </div>

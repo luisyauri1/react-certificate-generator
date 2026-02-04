@@ -196,7 +196,7 @@ export default function CertificateList() {
               >
                 <div className="flex items-center gap-4 md:gap-6">
                   {/* Preview del certificado */}
-                  <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-slate-800/50 rounded-lg flex items-center justify-center overflow-hidden border border-orange-500/10">
+                  <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 bg-slate-800/50 rounded-lg flex items-center justify-center overflow-hidden border border-orange-500/10">
                     {certificate.imageUrl ? (
                       <img
                         src={certificate.imageUrl}
@@ -243,7 +243,7 @@ export default function CertificateList() {
                   </div>
 
                   {/* Botones de acción */}
-                  <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-2 shrink-0">
                     {/* Botón editar */}
                     <button
                       onClick={e => handleEdit(certificate.id, e)}
