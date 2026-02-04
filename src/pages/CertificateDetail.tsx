@@ -16,6 +16,10 @@ export default function CertificateDetail() {
 
   const [certificate, setCertificate] = useState<Certificate | null>(null)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageDimensions, setImageDimensions] = useState<{
+    width: number
+    height: number
+  } | null>(null)
   const [texts, setTexts] = useState<TextElement[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [certificateName, setCertificateName] = useState('')
@@ -84,7 +88,15 @@ export default function CertificateDetail() {
     if (file) {
       const reader = new FileReader()
       reader.onload = () => {
-        setImageUrl(reader.result as string)
+        const url = reader.result as string
+        setImageUrl(url)
+
+        // Obtener dimensiones originales
+        const img = new Image()
+        img.onload = () => {
+          setImageDimensions({ width: img.width, height: img.height })
+        }
+        img.src = url
       }
       reader.readAsDataURL(file)
     }
@@ -100,6 +112,9 @@ export default function CertificateDetail() {
       y: 1240,
       fontSize: 60,
       color: '#000000',
+      fontFamily: 'Roboto',
+      fontWeight: 'normal',
+      fontStyle: 'normal',
     }
     setTexts([...texts, newText])
     setSelectedId(newText.id)
@@ -257,6 +272,7 @@ export default function CertificateDetail() {
       <div className="flex-1 flex overflow-hidden">
         <Sidebar
           imageUrl={imageUrl}
+          imageDimensions={imageDimensions}
           texts={texts}
           selectedId={selectedId}
           onImageUpload={handleImageUpload}
@@ -275,6 +291,7 @@ export default function CertificateDetail() {
               selectedId={selectedId}
               onSelect={setSelectedId}
               onUpdatePosition={handleUpdatePosition}
+              onChangeSelected={handleChangeSelected}
               stageRef={stageRef}
             />
           ) : (

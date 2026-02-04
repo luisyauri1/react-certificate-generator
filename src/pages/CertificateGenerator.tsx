@@ -48,6 +48,9 @@ export default function CertificateGenerator() {
       y: 1240,
       fontSize: 60,
       color: '#000000',
+      fontFamily: 'Roboto',
+      fontWeight: 'normal',
+      fontStyle: 'normal',
     }
     setTexts([...texts, newText])
     setSelectedId(newText.id)
@@ -125,6 +128,7 @@ export default function CertificateGenerator() {
             selectedId={selectedId}
             onSelect={setSelectedId}
             onUpdatePosition={handleUpdatePosition}
+            onChangeSelected={handleChangeSelected}
             stageRef={stageRef}
           />
         ) : (

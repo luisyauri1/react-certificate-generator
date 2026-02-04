@@ -86,46 +86,6 @@ export default function CertificateForm({
               />
             </div>
 
-            <div>
-              <label className="block mb-1.5 text-sm font-medium text-white">
-                Texto
-              </label>
-              <input
-                type="text"
-                value={selectedText.text}
-                onChange={e => onChangeSelected({ text: e.target.value })}
-                className="w-full p-2.5 bg-slate-900/50 border border-orange-500/30 rounded-lg text-sm text-white focus:border-orange-500/50 focus:outline-none focus:ring-1 focus:ring-orange-500/50"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1.5 text-sm font-medium text-white">
-                Tamaño: {selectedText.fontSize}px
-              </label>
-              <input
-                type="range"
-                min="20"
-                max="200"
-                value={selectedText.fontSize}
-                onChange={e =>
-                  onChangeSelected({ fontSize: Number(e.target.value) })
-                }
-                className="w-full accent-orange-500"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1.5 text-sm font-medium text-white">
-                Color
-              </label>
-              <input
-                type="color"
-                value={selectedText.color}
-                onChange={e => onChangeSelected({ color: e.target.value })}
-                className="w-full h-10 bg-slate-900/50 border border-orange-500/30 rounded-lg cursor-pointer"
-              />
-            </div>
-
             <button
               onClick={onDeleteSelected}
               className="w-full py-2.5 bg-slate-800/50 hover:bg-red-500/20 border border-orange-500/30 hover:border-red-500/50 text-orange-200 hover:text-red-400 rounded-lg text-sm font-semibold transition-colors"

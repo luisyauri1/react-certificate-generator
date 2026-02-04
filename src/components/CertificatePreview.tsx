@@ -1,4 +1,12 @@
-import { RotateCcw, ZoomIn, ZoomOut } from 'lucide-react'
+import {
+  Bold,
+  Italic,
+  Palette,
+  RotateCcw,
+  Type,
+  ZoomIn,
+  ZoomOut,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
   Group,
@@ -19,6 +27,7 @@ export default function CertificatePreview({
   selectedId,
   onSelect,
   onUpdatePosition,
+  onChangeSelected,
   stageRef,
 }: CertificatePreviewProps) {
   const [image, setImage] = useState<HTMLImageElement | null>(null)
@@ -77,6 +86,8 @@ export default function CertificatePreview({
     setZoom(1)
   }
 
+  const selectedText = texts.find(t => t.id === selectedId)
+
   return (
     <div className="p-8">
       {/* Controles de zoom */}
@@ -108,6 +119,98 @@ export default function CertificatePreview({
           {Math.round(zoom * 100)}%
         </div>
       </div>
+
+      {/* Barra de herramientas flotante para texto seleccionado */}
+      {selectedText && (
+        <div className="mb-4 p-4 bg-slate-800/90 backdrop-blur-sm border border-orange-500/30 rounded-lg">
+          <div className="flex items-center gap-4 flex-wrap">
+            {/* Selector de fuente */}
+            <div className="flex items-center gap-2">
+              <Type className="w-4 h-4 text-orange-400" />
+              <select
+                value={selectedText.fontFamily || 'Roboto'}
+                onChange={e => onChangeSelected({ fontFamily: e.target.value })}
+                className="px-2 py-1 bg-slate-900/50 border border-orange-500/30 rounded text-xs text-white focus:border-orange-500/50 focus:outline-none"
+              >
+                <option value="Roboto">Roboto</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Playfair Display">Playfair</option>
+              </select>
+            </div>
+
+            {/* Tamaño */}
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={selectedText.fontSize}
+                onChange={e =>
+                  onChangeSelected({ fontSize: Number(e.target.value) })
+                }
+                min="20"
+                max="200"
+                className="w-16 px-2 py-1 bg-slate-900/50 border border-orange-500/30 rounded text-xs text-white focus:border-orange-500/50 focus:outline-none"
+              />
+              <span className="text-xs text-orange-200/60">px</span>
+            </div>
+
+            {/* Negrita */}
+            <button
+              onClick={() =>
+                onChangeSelected({
+                  fontWeight:
+                    selectedText.fontWeight === 'bold' ? 'normal' : 'bold',
+                })
+              }
+              className={`p-1.5 rounded transition-colors ${
+                selectedText.fontWeight === 'bold'
+                  ? 'bg-orange-600 text-white'
+                  : 'bg-slate-900/50 border border-orange-500/30 text-white hover:border-orange-500/50'
+              }`}
+              title="Negrita"
+            >
+              <Bold className="w-4 h-4" />
+            </button>
+
+            {/* Cursiva */}
+            <button
+              onClick={() =>
+                onChangeSelected({
+                  fontStyle:
+                    selectedText.fontStyle === 'italic' ? 'normal' : 'italic',
+                })
+              }
+              className={`p-1.5 rounded transition-colors ${
+                selectedText.fontStyle === 'italic'
+                  ? 'bg-orange-600 text-white'
+                  : 'bg-slate-900/50 border border-orange-500/30 text-white hover:border-orange-500/50'
+              }`}
+              title="Cursiva"
+            >
+              <Italic className="w-4 h-4" />
+            </button>
+
+            {/* Color */}
+            <div className="flex items-center gap-2">
+              <Palette className="w-4 h-4 text-orange-400" />
+              <input
+                type="color"
+                value={selectedText.color}
+                onChange={e => onChangeSelected({ color: e.target.value })}
+                className="w-8 h-8 bg-slate-900/50 border border-orange-500/30 rounded cursor-pointer"
+              />
+            </div>
+
+            {/* Input de texto */}
+            <input
+              type="text"
+              value={selectedText.text}
+              onChange={e => onChangeSelected({ text: e.target.value })}
+              className="flex-1 min-w-50 px-3 py-1 bg-slate-900/50 border border-orange-500/30 rounded text-sm text-white focus:border-orange-500/50 focus:outline-none"
+              placeholder="Texto..."
+            />
+          </div>
+        </div>
+      )}
 
       <div
         className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden inline-block"
@@ -177,6 +280,8 @@ export default function CertificatePreview({
                     text={textItem.text}
                     fontSize={textItem.fontSize}
                     fill={textItem.color}
+                    fontFamily={textItem.fontFamily || 'Roboto'}
+                    fontStyle={`${textItem.fontStyle || 'normal'}${textItem.fontWeight === 'bold' ? ' bold' : ''}`}
                     ref={node => {
                       if (node && isSelected) {
                         // Obtener dimensiones reales del texto

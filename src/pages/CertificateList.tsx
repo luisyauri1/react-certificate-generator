@@ -216,7 +216,7 @@ export default function CertificateList() {
                       </h3>
                       {/* Etiqueta de estado */}
                       <div
-                        className={`flex items-center gap-1.5 px-2 md:px-2.5 py-1 rounded-md text-xs md:text-sm font-medium flex-shrink-0 ${
+                        className={`flex items-center gap-1.5 px-2 md:px-2.5 py-1 rounded-md text-xs md:text-sm font-medium shrink-0 ${
                           certificate.imageUrl
                             ? 'bg-green-500/20 text-green-400'
                             : 'bg-orange-500/20 text-orange-400'

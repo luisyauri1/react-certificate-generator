@@ -7,6 +7,9 @@ export interface TextElement {
   y: number
   fontSize: number
   color: string
+  fontFamily?: string
+  fontWeight?: 'normal' | 'bold'
+  fontStyle?: 'normal' | 'italic'
 }
 
 // Certificado guardado
@@ -26,6 +29,7 @@ export interface CertificatePreviewProps {
   selectedId: string | null
   onSelect: (id: string | null) => void
   onUpdatePosition: (id: string, x: number, y: number) => void
+  onChangeSelected: (updates: Partial<TextElement>) => void
   stageRef: React.RefObject<import('konva/lib/Stage').Stage | null>
 }
 
