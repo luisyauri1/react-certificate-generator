@@ -148,9 +148,9 @@ export default function BulkExportButton({
     <button
       onClick={handleBulkExport}
       disabled={isExporting}
-      className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors border border-gray-200 px-4 py-2 rounded hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="flex items-center gap-2 text-sm md:text-base text-white bg-slate-800/50 hover:bg-slate-800/70 transition-colors border border-orange-500/30 hover:border-orange-500/50 px-4 md:px-5 py-2 md:py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
     >
-      <Download size={16} strokeWidth={1.5} />
+      <Download size={18} strokeWidth={1.5} />
       {isExporting ? (
         <span>Exportando {progress}%...</span>
       ) : (

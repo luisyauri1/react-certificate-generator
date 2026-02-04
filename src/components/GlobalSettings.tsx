@@ -138,23 +138,23 @@ export default function GlobalSettings() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors border border-gray-200 px-4 py-2 rounded hover:border-gray-300"
+        className="flex items-center gap-2 text-sm md:text-base text-white bg-slate-800/50 hover:bg-slate-800/70 transition-colors border border-orange-500/30 hover:border-orange-500/50 px-4 md:px-5 py-2 md:py-2.5 rounded-lg font-medium"
       >
-        <Settings size={16} strokeWidth={1.5} />
+        <Settings size={18} strokeWidth={1.5} />
         Configuración
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-900 border border-orange-500/30 rounded-xl shadow-2xl max-w-md w-full p-6">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-light text-gray-800">
+              <h2 className="text-xl font-semibold text-white">
                 Configuración General
               </h2>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-orange-400/60 hover:text-orange-400"
               >
                 <X size={20} />
               </button>
@@ -163,10 +163,10 @@ export default function GlobalSettings() {
             {/* Content */}
             <div className="space-y-6">
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-3">
+                <h3 className="text-base font-semibold text-white mb-3">
                   Plantilla común
                 </h3>
-                <p className="text-xs text-gray-500 mb-4">
+                <p className="text-sm text-orange-200/60 mb-4">
                   Carga una plantilla que se aplicará a todos los certificados
                   nuevos y existentes.
                 </p>
@@ -177,13 +177,13 @@ export default function GlobalSettings() {
                     <img
                       src={globalTemplate}
                       alt="Plantilla global"
-                      className="w-full h-32 object-cover rounded border border-gray-200"
+                      className="w-full h-32 object-cover rounded-lg border border-orange-500/30"
                     />
                     <button
                       onClick={handleRemoveTemplate}
-                      className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md hover:bg-gray-100"
+                      className="absolute top-2 right-2 bg-slate-800 rounded-full p-1.5 hover:bg-slate-700 border border-orange-500/30"
                     >
-                      <X size={16} className="text-gray-600" />
+                      <X size={16} className="text-orange-400" />
                     </button>
                   </div>
                 )}
@@ -196,9 +196,9 @@ export default function GlobalSettings() {
                     onChange={handleTemplateUpload}
                     className="hidden"
                   />
-                  <div className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-gray-400 transition-colors">
-                    <Image size={20} className="text-gray-400" />
-                    <span className="text-sm text-gray-600">
+                  <div className="flex items-center justify-center gap-2 border-2 border-dashed border-orange-500/30 rounded-lg p-4 cursor-pointer hover:border-orange-500/50 hover:bg-slate-800/50 transition-colors">
+                    <Image size={20} className="text-orange-400" />
+                    <span className="text-sm text-white font-medium">
                       {globalTemplate
                         ? 'Cambiar plantilla'
                         : 'Cargar plantilla'}
@@ -211,7 +211,7 @@ export default function GlobalSettings() {
               {globalTemplate && (
                 <button
                   onClick={handleApplyToAll}
-                  className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 bg-orange-600 text-white px-4 py-3 rounded-lg hover:bg-orange-500 transition-colors font-medium"
                 >
                   <Check size={18} />
                   Aplicar a todos los certificados
@@ -219,14 +219,14 @@ export default function GlobalSettings() {
               )}
 
               {/* Separador */}
-              <div className="border-t border-gray-200" />
+              <div className="border-t border-orange-500/20" />
 
               {/* Sección de Excel */}
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-3">
+                <h3 className="text-base font-semibold text-white mb-3">
                   Importar desde Excel
                 </h3>
-                <p className="text-xs text-gray-500 mb-4">
+                <p className="text-sm text-orange-200/60 mb-4">
                   Carga un archivo Excel para crear múltiples certificados. La
                   primera fila debe contener las etiquetas (columnas) y cada
                   fila siguiente será un certificado.
@@ -240,20 +240,20 @@ export default function GlobalSettings() {
                     onChange={handleExcelUpload}
                     className="hidden"
                   />
-                  <div className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-gray-400 transition-colors">
-                    <FileSpreadsheet size={20} className="text-gray-400" />
-                    <span className="text-sm text-gray-600">
+                  <div className="flex items-center justify-center gap-2 border-2 border-dashed border-orange-500/30 rounded-lg p-4 cursor-pointer hover:border-orange-500/50 hover:bg-slate-800/50 transition-colors">
+                    <FileSpreadsheet size={20} className="text-orange-400" />
+                    <span className="text-sm text-white font-medium">
                       Cargar archivo Excel
                     </span>
                   </div>
                 </label>
 
                 {/* Info sobre el formato */}
-                <div className="mt-3 bg-blue-50 rounded-lg p-3">
-                  <p className="text-xs text-blue-700 font-medium mb-1">
+                <div className="mt-3 bg-orange-500/10 rounded-lg p-3 border border-orange-500/20">
+                  <p className="text-sm text-orange-300 font-medium mb-1">
                     📋 Formato del Excel:
                   </p>
-                  <ul className="text-xs text-blue-600 space-y-1 ml-3">
+                  <ul className="text-sm text-orange-200/70 space-y-1 ml-3">
                     <li>• Primera fila: nombres de las etiquetas</li>
                     <li>• Filas siguientes: valores para cada certificado</li>
                     <li>• Primera columna: nombre del certificado</li>
@@ -262,8 +262,8 @@ export default function GlobalSettings() {
               </div>
 
               {/* Info general */}
-              <div className="bg-gray-50 rounded-lg p-3">
-                <p className="text-xs text-gray-600">
+              <div className="bg-slate-800/50 rounded-lg p-3 border border-orange-500/20">
+                <p className="text-sm text-orange-200/70">
                   💡 Los certificados creados desde Excel usarán la plantilla
                   común si está configurada.
                 </p>
