@@ -3,6 +3,7 @@ import MainLayout from './layouts/MainLayout'
 import CertificateDetail from './pages/CertificateDetail'
 import CertificateGenerator from './pages/CertificateGenerator'
 import CertificateList from './pages/CertificateList'
+import EditableTextDemo from './pages/EditableTextDemo'
 import ModeSelection from './pages/ModeSelection'
 
 export const router = createBrowserRouter(
@@ -26,6 +27,10 @@ export const router = createBrowserRouter(
         {
           path: 'grupo/:id',
           element: <CertificateDetail />,
+        },
+        {
+          path: 'demo-texto',
+          element: <EditableTextDemo />,
         },
       ],
     },
