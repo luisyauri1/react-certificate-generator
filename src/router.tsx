@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router'
 import MainLayout from './layouts/MainLayout'
+import CertificateDetail from './pages/CertificateDetail'
 import CertificateGenerator from './pages/CertificateGenerator'
+import CertificateList from './pages/CertificateList'
 import ModeSelection from './pages/ModeSelection'
 
 export const router = createBrowserRouter(
@@ -19,7 +21,11 @@ export const router = createBrowserRouter(
         },
         {
           path: 'grupo',
-          element: <div>Grupo Manual - Próximamente</div>,
+          element: <CertificateList />,
+        },
+        {
+          path: 'grupo/:id',
+          element: <CertificateDetail />,
         },
         {
           path: 'excel',

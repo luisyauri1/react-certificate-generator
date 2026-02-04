@@ -9,6 +9,16 @@ export interface TextElement {
   color: string
 }
 
+// Certificado guardado
+export interface Certificate {
+  id: string
+  name: string
+  createdAt: string
+  updatedAt: string
+  imageUrl: string | null
+  texts: TextElement[]
+}
+
 // Props para CertificatePreview
 export interface CertificatePreviewProps {
   imageUrl: string | null
