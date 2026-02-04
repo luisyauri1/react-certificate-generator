@@ -5,6 +5,7 @@ export type { CertificateListEmptyStateProps } from './CertificateListEmptyState
 export type { CertificateListHeaderProps } from './CertificateListHeaderProps'
 export type { CertificateListItemProps } from './CertificateListItemProps'
 export type { CertificatePreviewProps } from './CertificatePreviewProps'
+export type { CertificateStatusBadgeProps } from './CertificateStatusBadgeProps'
 export type { CertificateTemplateSelectorProps } from './CertificateTemplateSelectorProps'
 export type { GlobalActionsProps } from './GlobalActionsProps'
 export type { ModeCardProps } from './ModeCardProps'
