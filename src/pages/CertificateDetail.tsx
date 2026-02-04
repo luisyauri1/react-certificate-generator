@@ -243,7 +243,6 @@ export default function CertificateDetail() {
           onChangeSelected={handleChangeSelected}
           onAddText={handleAddText}
           onDeleteSelected={handleDeleteSelected}
-          onExport={handleExportPDF}
         />
 
         <div className="flex-1 bg-slate-900 flex items-center justify-center overflow-auto">
@@ -256,6 +255,7 @@ export default function CertificateDetail() {
               onUpdatePosition={handleUpdatePosition}
               onChangeSelected={handleChangeSelected}
               stageRef={stageRef}
+              onExport={handleExportPDF}
             />
           ) : (
             <EmptyState />

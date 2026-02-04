@@ -50,7 +50,7 @@ export default function CertificateListItem({
           <Button
             variant="ghost"
             size="sm"
-            onClick={e => onEdit(certificate.id, e)}
+            onClick={(e: React.MouseEvent) => onEdit(certificate.id, e)}
             title="Editar certificado"
           >
             <Edit size={16} />
@@ -61,7 +61,7 @@ export default function CertificateListItem({
             <Button
               variant="success"
               size="sm"
-              onClick={e => onDownload(certificate, e)}
+              onClick={(e: React.MouseEvent) => onDownload(certificate, e)}
               title="Descargar certificado"
             >
               <Download size={16} />
@@ -72,7 +72,7 @@ export default function CertificateListItem({
           <Button
             variant="danger"
             size="sm"
-            onClick={e => onDelete(certificate.id, e)}
+            onClick={(e: React.MouseEvent) => onDelete(certificate.id, e)}
             title="Eliminar certificado"
           >
             <Trash2 size={16} />

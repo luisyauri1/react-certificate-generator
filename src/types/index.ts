@@ -1,4 +1,5 @@
 export type { BulkExportModalProps } from './BulkExportModalProps'
+export type { ButtonProps, ButtonVariant } from './ButtonProps'
 export type { Certificate } from './Certificate'
 export type { CertificateFormProps } from './CertificateFormProps'
 export type { CertificateListContentProps } from './CertificateListContentProps'

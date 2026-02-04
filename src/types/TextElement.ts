@@ -10,4 +10,5 @@ export interface TextElement {
   fontFamily?: string
   fontWeight?: 'normal' | 'bold'
   fontStyle?: 'normal' | 'italic'
+  width?: number
 }

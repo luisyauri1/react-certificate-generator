@@ -1,4 +1,4 @@
-import type { ButtonProps, ButtonVariant } from './types/ButtonProps'
+import type { ButtonProps, ButtonVariant } from '../types'
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-orange-600 text-white hover:bg-orange-500 border-0 font-medium',
@@ -30,7 +30,7 @@ export default function Button({
   const baseStyles =
     'cursor-pointer flex items-center justify-center gap-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
   const variantClass = variantStyles[variant]
-  const sizeClass = sizeStyles[size]
+  const sizeClass = sizeStyles[size as 'sm' | 'md' | 'lg']
   const widthClass = fullWidth ? 'w-full' : ''
 
   const finalClassName =
