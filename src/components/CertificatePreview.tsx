@@ -8,6 +8,7 @@ import {
   ZoomOut,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import Button from './Button'
 import {
   Group,
   Image as KonvaImage,
@@ -93,27 +94,33 @@ export default function CertificatePreview({
       {/* Controles de zoom */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleZoomOut}
-            className="p-2 bg-slate-800/50 hover:bg-slate-800 border border-orange-500/30 hover:border-orange-500/50 text-white rounded-lg transition-colors"
+            className="!p-2"
             title="Alejar (Zoom Out)"
           >
             <ZoomOut className="w-4 h-4" />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleResetZoom}
-            className="p-2 bg-slate-800/50 hover:bg-slate-800 border border-orange-500/30 hover:border-orange-500/50 text-white rounded-lg transition-colors"
+            className="!p-2"
             title="Restablecer zoom"
           >
             <RotateCcw className="w-4 h-4" />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleZoomIn}
-            className="p-2 bg-slate-800/50 hover:bg-slate-800 border border-orange-500/30 hover:border-orange-500/50 text-white rounded-lg transition-colors"
+            className="!p-2"
             title="Acercar (Zoom In)"
           >
             <ZoomIn className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
         <div className="px-3 py-1.5 bg-slate-800/50 border border-orange-500/30 text-white text-sm font-mono rounded-lg">
           {Math.round(zoom * 100)}%

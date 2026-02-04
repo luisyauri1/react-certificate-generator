@@ -3,6 +3,7 @@ import type { Stage as KonvaStage } from 'konva/lib/Stage'
 import { ArrowLeft, ChevronLeft, ChevronRight, Save } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import Button from '../components/Button'
 import CertificatePreview from '../components/CertificatePreview'
 import EmptyState from '../components/EmptyState'
 import Sidebar from '../components/Sidebar'
@@ -207,12 +208,14 @@ export default function CertificateDetail() {
       {/* Header con nombre editable y botones */}
       <div className="bg-slate-900/50 backdrop-blur-sm border-b border-orange-500/20 px-8 py-5 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => navigate('/grupo')}
-            className="text-orange-400/60 hover:text-orange-400 transition-colors"
+            className="!p-0"
           >
             <ArrowLeft size={18} strokeWidth={1.5} />
-          </button>
+          </Button>
 
           {isEditing ? (
             <input
@@ -237,34 +240,35 @@ export default function CertificateDetail() {
         <div className="flex items-center gap-3">
           {/* Navegación entre certificados */}
           <div className="flex items-center gap-1 border border-orange-500/30 rounded-lg overflow-hidden bg-slate-800/30">
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handlePrevious}
               disabled={!hasPrevious}
-              className="p-1.5 text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
               title="Certificado anterior"
+              className="!p-1.5 rounded-none"
             >
               <ChevronLeft size={16} strokeWidth={1.5} />
-            </button>
+            </Button>
             <div className="px-3 text-xs text-orange-300/70 border-x border-orange-500/30">
               {currentIndex + 1} / {certificates.length}
             </div>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleNext}
               disabled={!hasNext}
-              className="p-1.5 text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
               title="Siguiente certificado"
+              className="!p-1.5 rounded-none"
             >
               <ChevronRight size={16} strokeWidth={1.5} />
-            </button>
+            </Button>
           </div>
 
-          <button
-            onClick={handleSave}
-            className="flex items-center gap-2 text-sm text-white bg-orange-600 hover:bg-orange-500 transition-colors px-4 py-2 rounded-lg font-medium"
-          >
+          <Button variant="primary" size="md" onClick={handleSave}>
             <Save size={14} strokeWidth={1.5} />
             Guardar
-          </button>
+          </Button>
         </div>
       </div>
 

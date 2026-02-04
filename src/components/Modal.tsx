@@ -1,4 +1,5 @@
 import { X } from 'lucide-react'
+import Button from './Button'
 
 interface ModalProps {
   isOpen: boolean
@@ -21,12 +22,9 @@ export default function Modal({
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-white">{title}</h2>
-          <button
-            onClick={onClose}
-            className="text-orange-400/60 hover:text-orange-400 cursor-pointer transition-colors"
-          >
+          <Button variant="ghost" size="sm" onClick={onClose} className="!p-0">
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Content */}

@@ -1,6 +1,7 @@
 import { FileImage, Upload } from 'lucide-react'
 import { useRef } from 'react'
 import type { CertificateTemplateSelectorProps } from '../types/index'
+import Button from './Button'
 
 export default function CertificateTemplateSelector({
   onTemplateLoad,
@@ -55,14 +56,10 @@ export default function CertificateTemplateSelector({
           onChange={handleFileChange}
           className="hidden"
         />
-        <button
-          type="button"
-          onClick={handleUploadClick}
-          className="flex items-center gap-3 rounded-lg bg-linear-to-r from-orange-600 to-orange-500 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all hover:from-orange-700 hover:to-orange-600 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
-        >
+        <Button variant="primary" size="md" onClick={handleUploadClick}>
           <Upload className="h-5 w-5" />
           <span>Cargar Plantilla</span>
-        </button>
+        </Button>
 
         <div className="flex items-center gap-2 text-xs text-orange-600">
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-100">

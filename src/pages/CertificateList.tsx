@@ -12,6 +12,7 @@ import {
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import BulkExportButton from '../components/BulkExportButton'
+import Button from '../components/Button'
 import ExcelModal from '../components/ExcelModal'
 import Modal from '../components/Modal'
 import TemplateModal from '../components/TemplateModal'
@@ -166,30 +167,29 @@ export default function CertificateList() {
               </p>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
-              <button
+              <Button
+                variant="secondary"
+                size="md"
                 onClick={() => setIsTemplateModalOpen(true)}
-                className="flex cursor-pointer items-center gap-2 text-sm md:text-base text-white bg-slate-800/50 hover:bg-slate-800/70 transition-colors border border-orange-500/30 hover:border-orange-500/50 px-3 md:px-4 py-2 md:py-2.5 rounded-lg font-medium"
               >
                 <Image size={16} strokeWidth={1.5} />
                 <span className="hidden sm:inline">Plantilla</span>
-              </button>
+              </Button>
 
-              <button
+              <Button
+                variant="secondary"
+                size="md"
                 onClick={() => setIsExcelModalOpen(true)}
-                className="flex cursor-pointer items-center gap-2 text-sm md:text-base text-white bg-slate-800/50 hover:bg-slate-800/70 transition-colors border border-orange-500/30 hover:border-orange-500/50 px-3 md:px-4 py-2 md:py-2.5 rounded-lg font-medium"
               >
                 <FileSpreadsheet size={16} strokeWidth={1.5} />
                 <span className="hidden sm:inline">Excel</span>
-              </button>
+              </Button>
 
               <BulkExportButton certificates={certificates} />
-              <button
-                onClick={handleCreateNew}
-                className="flex items-center gap-2 text-sm md:text-base text-white bg-orange-600 hover:bg-orange-500 transition-colors px-4 md:px-5 py-2 md:py-2.5 rounded-lg font-medium"
-              >
+              <Button variant="primary" size="md" onClick={handleCreateNew}>
                 <Plus size={18} />
                 Nuevo
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -205,13 +205,10 @@ export default function CertificateList() {
                 <p className="text-base md:text-lg text-white mb-2">
                   No hay certificados
                 </p>
-                <button
-                  onClick={handleCreateNew}
-                  className="inline-flex items-center gap-2 text-sm md:text-base text-orange-400 hover:text-orange-300 transition-colors mt-2"
-                >
+                <Button variant="ghost" size="sm" onClick={handleCreateNew}>
                   <Plus size={16} />
                   Crear el primero
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -273,36 +270,39 @@ export default function CertificateList() {
                   {/* Botones de acción */}
                   <div className="flex items-center gap-2 shrink-0">
                     {/* Botón editar */}
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={e => handleEdit(certificate.id, e)}
-                      className="flex items-center gap-2 text-orange-400 hover:text-orange-300 text-sm md:text-base transition-all px-3 py-2 rounded-lg hover:bg-orange-500/10"
                       title="Editar certificado"
                     >
                       <Edit size={16} />
                       <span className="hidden lg:inline">Editar</span>
-                    </button>
+                    </Button>
 
                     {/* Botón descargar */}
                     {certificate.imageUrl && (
-                      <button
+                      <Button
+                        variant="success"
+                        size="sm"
                         onClick={e => handleDownload(certificate, e)}
-                        className="flex items-center gap-2 text-green-400 hover:text-green-300 text-sm md:text-base transition-all px-3 py-2 rounded-lg hover:bg-green-500/10"
                         title="Descargar certificado"
                       >
                         <Download size={16} />
                         <span className="hidden lg:inline">Descargar</span>
-                      </button>
+                      </Button>
                     )}
 
                     {/* Botón eliminar */}
-                    <button
+                    <Button
+                      variant="danger"
+                      size="sm"
                       onClick={e => handleDelete(certificate.id, e)}
-                      className="flex items-center gap-2 text-red-400/60 hover:text-red-400 text-sm md:text-base transition-all px-3 py-2 rounded-lg hover:bg-red-500/10"
                       title="Eliminar certificado"
                     >
                       <Trash2 size={16} />
                       <span className="hidden lg:inline">Eliminar</span>
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

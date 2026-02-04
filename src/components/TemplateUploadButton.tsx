@@ -1,5 +1,6 @@
 import { Check, Upload } from 'lucide-react'
 import { useRef } from 'react'
+import Button from './Button'
 
 interface TemplateUploadButtonProps {
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -27,16 +28,14 @@ export default function TemplateUploadButton({
         className="hidden"
       />
 
-      <button
-        type="button"
+      <Button
+        variant="outline"
+        size="md"
+        fullWidth
         onClick={handleClick}
-        className={`w-full rounded-lg border transition-all duration-200 ${
-          hasImage
-            ? 'border-orange-500/30 bg-slate-800/50 hover:border-orange-500/50'
-            : 'border-dashed border-orange-500/30 bg-slate-800/30 hover:border-orange-500/50 hover:bg-slate-800/50'
-        }`}
+        className="!px-0"
       >
-        <div className="p-5">
+        <div className="w-full p-5">
           <div className="flex items-center gap-4">
             {/* Ícono */}
             <div
@@ -69,7 +68,7 @@ export default function TemplateUploadButton({
             )}
           </div>
         </div>
-      </button>
+      </Button>
     </div>
   )
 }

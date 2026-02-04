@@ -3,6 +3,7 @@ import JSZip from 'jszip'
 import Konva from 'konva'
 import { Download } from 'lucide-react'
 import { useState } from 'react'
+import Button from './Button'
 import type { Certificate } from '../types'
 
 interface BulkExportButtonProps {
@@ -145,10 +146,11 @@ export default function BulkExportButton({
   }
 
   return (
-    <button
+    <Button
+      variant="secondary"
+      size="md"
       onClick={handleBulkExport}
       disabled={isExporting}
-      className="flex items-center gap-2 text-sm md:text-base text-white bg-slate-800/50 hover:bg-slate-800/70 transition-colors border border-orange-500/30 hover:border-orange-500/50 px-4 md:px-5 py-2 md:py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
     >
       <Download size={18} strokeWidth={1.5} />
       {isExporting ? (
@@ -156,6 +158,6 @@ export default function BulkExportButton({
       ) : (
         <span>Exportar todos ({readyCertificates.length})</span>
       )}
-    </button>
+    </Button>
   )
 }

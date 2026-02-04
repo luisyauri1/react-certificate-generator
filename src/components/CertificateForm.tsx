@@ -1,4 +1,5 @@
 import type { CertificateFormProps } from '../types'
+import Button from './Button'
 
 export default function CertificateForm({
   texts,
@@ -14,16 +15,18 @@ export default function CertificateForm({
   return (
     <div className="space-y-6">
       {/* Botón agregar texto */}
-      <button
+      <Button
+        variant="primary"
+        size="md"
         onClick={onAddText}
         disabled={!hasImage}
-        className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-sm font-semibold transition-colors disabled:bg-slate-800/30 disabled:text-orange-400/40 disabled:cursor-not-allowed disabled:hover:bg-slate-800/30"
+        fullWidth
         title={
           !hasImage ? 'Primero carga una plantilla' : 'Agregar nuevo texto'
         }
       >
         + Agregar texto
-      </button>
+      </Button>
 
       {/* Lista de textos agregados */}
       {texts.length > 0 && (
@@ -86,12 +89,14 @@ export default function CertificateForm({
               />
             </div>
 
-            <button
+            <Button
               onClick={onDeleteSelected}
-              className="w-full py-2.5 bg-slate-800/50 hover:bg-red-500/20 border border-orange-500/30 hover:border-red-500/50 text-orange-200 hover:text-red-400 rounded-lg text-sm font-semibold transition-colors"
+              variant="danger"
+              size="md"
+              fullWidth
             >
               Eliminar texto
-            </button>
+            </Button>
           </div>
         </div>
       )}

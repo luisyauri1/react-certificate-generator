@@ -1,5 +1,6 @@
 import { Image, X } from 'lucide-react'
 import { useCertificates } from '../contexts/CertificateContext'
+import Button from './Button'
 
 export default function TemplateModal() {
   const { globalTemplate, setGlobalTemplate, applyTemplateToAll } =
@@ -54,12 +55,14 @@ export default function TemplateModal() {
               alt="Plantilla global"
               className="w-full h-32 object-cover rounded-lg border border-orange-500/30"
             />
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleRemoveTemplate}
-              className="absolute top-2 right-2 bg-slate-800 rounded-full p-1.5 hover:bg-slate-700 border border-orange-500/30 cursor-pointer transition-colors"
+              className="absolute top-2 right-2 !p-1.5 bg-slate-800 rounded-full border border-orange-500/30"
             >
               <X size={16} className="text-orange-400" />
-            </button>
+            </Button>
           </div>
         )}
 
@@ -80,12 +83,14 @@ export default function TemplateModal() {
       </div>
 
       {globalTemplate && (
-        <button
+        <Button
+          variant="primary"
+          size="md"
           onClick={handleApplyToAll}
-          className="w-full flex items-center justify-center gap-2 bg-orange-600 text-white px-4 py-3 rounded-lg hover:bg-orange-500 transition-colors font-medium cursor-pointer"
+          fullWidth
         >
           Aplicar a todos los certificados
-        </button>
+        </Button>
       )}
     </div>
   )
