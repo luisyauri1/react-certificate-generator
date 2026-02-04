@@ -1,6 +1,7 @@
-import { Check, Image, Settings, X } from 'lucide-react'
+import { Check, FileSpreadsheet, Image, Settings, X } from 'lucide-react'
 import { useState } from 'react'
-import type { Certificate } from '../types'
+import * as XLSX from 'xlsx'
+import type { Certificate, TextElement } from '../types'
 
 interface GlobalSettingsProps {
   certificates: Certificate[]
@@ -60,6 +61,92 @@ export default function GlobalSettings({
   const handleRemoveTemplate = () => {
     setGlobalTemplate(null)
     localStorage.removeItem('globalTemplate')
+  }
+
+  // Cargar Excel y generar certificados
+  const handleExcelUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    try {
+      const data = await file.arrayBuffer()
+      const workbook = XLSX.read(data)
+      const sheetName = workbook.SheetNames[0]
+      const worksheet = workbook.Sheets[sheetName]
+      const jsonData: unknown[][] = XLSX.utils.sheet_to_json(worksheet, {
+        header: 1,
+      })
+
+      if (jsonData.length < 2) {
+        alert(
+          'El archivo Excel debe tener al menos una fila de encabezados y una fila de datos'
+        )
+        return
+      }
+
+      // Primera fila son las etiquetas
+      const labels = (jsonData[0] as unknown[]).filter(
+        label => label && String(label).trim()
+      )
+
+      if (labels.length === 0) {
+        alert('El archivo Excel debe tener columnas con etiquetas')
+        return
+      }
+
+      // Crear certificados a partir de las filas de datos
+      const newCertificates: Certificate[] = []
+      const baseY = 1240 // Posición Y base
+      const spacing = 150 // Espaciado vertical entre textos
+
+      for (let i = 1; i < jsonData.length; i++) {
+        const row = jsonData[i] as unknown[]
+        if (!row || row.length === 0) continue
+
+        // Crear textos para cada columna
+        const texts: TextElement[] = labels.map((label, index) => ({
+          id: `text-${Date.now()}-${i}-${index}`,
+          text: row[index] ? String(row[index]) : '',
+          label: String(label),
+          x: 1750, // Centro horizontal
+          y: baseY + index * spacing,
+          fontSize: 60,
+          color: '#000000',
+        }))
+
+        const certificate: Certificate = {
+          id: `cert-${Date.now()}-${i}`,
+          name: row[0] ? String(row[0]) : `Certificado ${i}`,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          imageUrl: globalTemplate || null,
+          texts,
+        }
+
+        newCertificates.push(certificate)
+      }
+
+      if (newCertificates.length === 0) {
+        alert('No se encontraron datos válidos en el Excel')
+        return
+      }
+
+      // Agregar los nuevos certificados
+      const allCertificates = [...certificates, ...newCertificates]
+      localStorage.setItem('certificates', JSON.stringify(allCertificates))
+      onUpdate(allCertificates)
+
+      alert(
+        `✓ ${newCertificates.length} certificado${newCertificates.length !== 1 ? 's' : ''} creado${newCertificates.length !== 1 ? 's' : ''} desde Excel`
+      )
+      setIsOpen(false)
+    } catch (error) {
+      console.error('Error al procesar Excel:', error)
+      alert('Error al procesar el archivo Excel')
+    }
+
+    // Limpiar input
+    e.target.value = ''
   }
 
   return (
@@ -146,11 +233,54 @@ export default function GlobalSettings({
                 </button>
               )}
 
-              {/* Info */}
+              {/* Separador */}
+              <div className="border-t border-gray-200" />
+
+              {/* Sección de Excel */}
+              <div>
+                <h3 className="text-sm font-medium text-gray-700 mb-3">
+                  Importar desde Excel
+                </h3>
+                <p className="text-xs text-gray-500 mb-4">
+                  Carga un archivo Excel para crear múltiples certificados. La
+                  primera fila debe contener las etiquetas (columnas) y cada
+                  fila siguiente será un certificado.
+                </p>
+
+                {/* Botón cargar Excel */}
+                <label className="block">
+                  <input
+                    type="file"
+                    accept=".xlsx,.xls"
+                    onChange={handleExcelUpload}
+                    className="hidden"
+                  />
+                  <div className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-gray-400 transition-colors">
+                    <FileSpreadsheet size={20} className="text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      Cargar archivo Excel
+                    </span>
+                  </div>
+                </label>
+
+                {/* Info sobre el formato */}
+                <div className="mt-3 bg-blue-50 rounded-lg p-3">
+                  <p className="text-xs text-blue-700 font-medium mb-1">
+                    📋 Formato del Excel:
+                  </p>
+                  <ul className="text-xs text-blue-600 space-y-1 ml-3">
+                    <li>• Primera fila: nombres de las etiquetas</li>
+                    <li>• Filas siguientes: valores para cada certificado</li>
+                    <li>• Primera columna: nombre del certificado</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Info general */}
               <div className="bg-gray-50 rounded-lg p-3">
                 <p className="text-xs text-gray-600">
-                  💡 Los nuevos certificados usarán automáticamente esta
-                  plantilla.
+                  💡 Los certificados creados desde Excel usarán la plantilla
+                  común si está configurada.
                 </p>
               </div>
             </div>
