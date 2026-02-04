@@ -1,19 +1,11 @@
 import { jsPDF } from 'jspdf'
 import Konva from 'konva'
-import {
-  Download,
-  Edit,
-  FileSpreadsheet,
-  FileText,
-  Image,
-  Plus,
-  Trash2,
-} from 'lucide-react'
+import { Download, Edit, FileText, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import BulkExportButton from '../components/BulkExportButton'
 import Button from '../components/Button'
 import ExcelModal from '../components/ExcelModal'
+import GlobalActions from '../components/GlobalActions'
 import Modal from '../components/Modal'
 import TemplateModal from '../components/TemplateModal'
 import { useCertificates } from '../contexts/CertificateContext'
@@ -166,31 +158,12 @@ export default function CertificateList() {
                 {certificates.length !== 1 ? 'certificados' : 'certificado'}
               </p>
             </div>
-            <div className="flex items-center gap-3 flex-wrap">
-              <Button
-                variant="secondary"
-                size="md"
-                onClick={() => setIsTemplateModalOpen(true)}
-              >
-                <Image size={16} strokeWidth={1.5} />
-                <span className="hidden sm:inline">Plantilla</span>
-              </Button>
-
-              <Button
-                variant="secondary"
-                size="md"
-                onClick={() => setIsExcelModalOpen(true)}
-              >
-                <FileSpreadsheet size={16} strokeWidth={1.5} />
-                <span className="hidden sm:inline">Excel</span>
-              </Button>
-
-              <BulkExportButton certificates={certificates} />
-              <Button variant="primary" size="md" onClick={handleCreateNew}>
-                <Plus size={18} />
-                Nuevo
-              </Button>
-            </div>
+            <GlobalActions
+              certificates={certificates}
+              onTemplateClick={() => setIsTemplateModalOpen(true)}
+              onExcelClick={() => setIsExcelModalOpen(true)}
+              onNewClick={handleCreateNew}
+            />
           </div>
         </div>
 

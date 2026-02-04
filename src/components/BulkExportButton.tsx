@@ -3,8 +3,8 @@ import JSZip from 'jszip'
 import Konva from 'konva'
 import { Download } from 'lucide-react'
 import { useState } from 'react'
-import Button from './Button'
 import type { Certificate } from '../types'
+import Button from './Button'
 
 interface BulkExportButtonProps {
   certificates: Certificate[]

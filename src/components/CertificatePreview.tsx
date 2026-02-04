@@ -8,7 +8,6 @@ import {
   ZoomOut,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import Button from './Button'
 import {
   Group,
   Image as KonvaImage,
@@ -18,6 +17,7 @@ import {
   Text,
 } from 'react-konva'
 import type { CertificatePreviewProps } from '../types'
+import Button from './Button'
 
 const STAGE_WIDTH = 3508
 const STAGE_HEIGHT = 2480
