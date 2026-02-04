@@ -28,6 +28,11 @@ export default function CertificateTemplateSelector({
       }
       reader.readAsDataURL(file)
     }
+
+    // Resetear el input para permitir cargar la misma imagen nuevamente
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }
 
   const handleUploadClick = () => {

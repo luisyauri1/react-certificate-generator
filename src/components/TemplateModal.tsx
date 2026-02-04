@@ -1,13 +1,16 @@
 import { Image, X } from 'lucide-react'
+import { useRef } from 'react'
 import {
   applyTemplateToAll,
   setGlobalTemplate,
 } from '../store/certificatesSlice'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
+import type { TemplateModalProps } from '../types/index'
 import Button from './Button'
 
-export default function TemplateModal() {
+export default function TemplateModal({ onClose }: TemplateModalProps) {
   const dispatch = useAppDispatch()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const globalTemplate = useAppSelector(
     state => state.certificates.globalTemplate
   )
@@ -40,10 +43,18 @@ export default function TemplateModal() {
 
     dispatch(applyTemplateToAll(globalTemplate))
     alert('Plantilla aplicada a todos los certificados')
+
+    // Cerrar el modal después de aplicar
+    if (onClose) {
+      onClose()
+    }
   }
 
   const handleRemoveTemplate = () => {
     dispatch(setGlobalTemplate(null))
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }
 
   return (
@@ -74,6 +85,7 @@ export default function TemplateModal() {
 
         <label className="block">
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/*"
             onChange={handleTemplateUpload}

@@ -101,7 +101,7 @@ export default function CertificateList() {
         title="Cargar Plantilla"
         onClose={() => setIsTemplateModalOpen(false)}
       >
-        <TemplateModal />
+        <TemplateModal onClose={() => setIsTemplateModalOpen(false)} />
       </Modal>
 
       <Modal

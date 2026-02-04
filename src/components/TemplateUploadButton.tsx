@@ -17,6 +17,14 @@ export default function TemplateUploadButton({
     fileInputRef.current?.click()
   }
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onImageUpload(e)
+    // Resetear el input para permitir cargar la misma imagen nuevamente
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
   return (
     <div>
       <input
@@ -24,7 +32,7 @@ export default function TemplateUploadButton({
         id="image-upload"
         type="file"
         accept="image/*"
-        onChange={onImageUpload}
+        onChange={handleImageUpload}
         className="hidden"
       />
 
