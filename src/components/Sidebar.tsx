@@ -35,7 +35,6 @@ export default function Sidebar({
   return (
     <div className="w-64 lg:w-72 xl:w-80 bg-slate-900/50 backdrop-blur-sm border-r border-orange-500/20 flex flex-col overflow-y-auto">
       <div className="p-6 space-y-6">
-        {/* Sección 1: Upload de imagen */}
         <div className="pb-6 border-b border-orange-500/20">
           <h3 className="text-sm font-bold text-white uppercase tracking-wide mb-3">
             Paso 1: Plantilla
@@ -45,7 +44,6 @@ export default function Sidebar({
             hasImage={!!imageUrl}
           />
 
-          {/* Texto para ver más información */}
           {imageDimensions && (
             <button
               type="button"

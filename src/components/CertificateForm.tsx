@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import type { CertificateFormProps } from '../types'
 import Button from './Button'
+import EditLabelModal from './EditLabelModal.tsx'
+import Modal from './Modal'
 
 export default function CertificateForm({
   texts,
@@ -10,11 +13,32 @@ export default function CertificateForm({
   onDeleteSelected,
   hasImage,
 }: CertificateFormProps) {
-  const selectedText = texts.find(t => t.id === selectedId)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editLabel, setEditLabel] = useState('')
+  const [editingId, setEditingId] = useState<string | null>(null)
+
+  const handleOpenEdit = (id: string) => {
+    const textToEdit = texts.find(t => t.id === id)
+    if (!textToEdit) return
+    onSelect(id)
+    setEditingId(id)
+    setEditLabel(textToEdit.label || '')
+    setIsEditModalOpen(true)
+  }
+
+  const handleCloseEdit = () => {
+    setIsEditModalOpen(false)
+    setEditingId(null)
+  }
+
+  const handleSaveLabel = () => {
+    if (!editingId) return
+    onChangeSelected({ label: editLabel.trim() })
+    setIsEditModalOpen(false)
+  }
 
   return (
     <div className="space-y-6">
-      {/* Botón agregar texto */}
       <Button
         variant="primary"
         size="md"
@@ -28,28 +52,23 @@ export default function CertificateForm({
         + Agregar texto
       </Button>
 
-      {/* Lista de textos agregados */}
       {texts.length > 0 && (
         <div className="space-y-2">
           <h4 className="text-xs font-semibold text-orange-300/70 uppercase tracking-wide">
             Textos ({texts.length})
           </h4>
-          <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">
+          <div className="space-y-1.5 max-h-128 overflow-y-auto pr-1">
             {texts.map(text => (
-              <button
+              <div
                 key={text.id}
                 onClick={() => onSelect(text.id)}
-                className={`w-full text-left p-3 rounded-lg border transition-colors ${
+                className={`w-full text-left p-3 rounded-lg border transition-colors cursor-pointer ${
                   selectedId === text.id
                     ? 'border-orange-500/50 bg-orange-500/10'
                     : 'border-orange-500/20 bg-slate-800/30 hover:border-orange-500/40 hover:bg-slate-800/50'
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <div
-                    className="w-3 h-3 rounded-sm shrink-0"
-                    style={{ backgroundColor: text.color }}
-                  />
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-semibold text-white">
                       {text.label || 'Sin etiqueta'}
@@ -58,45 +77,78 @@ export default function CertificateForm({
                       {text.text || 'Texto vacío'}
                     </div>
                   </div>
-                  {selectedId === text.id && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
-                  )}
                 </div>
-              </button>
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={event => {
+                      event.stopPropagation()
+                      onSelect(text.id)
+                    }}
+                    className="p-1.5 rounded hover:bg-orange-500/20 text-orange-400/70 hover:text-orange-400 transition-colors"
+                    title="Seleccionar"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={event => {
+                      event.stopPropagation()
+                      handleOpenEdit(text.id)
+                    }}
+                    className="p-1.5 rounded hover:bg-slate-500/20 text-slate-300/80 hover:text-slate-200 transition-colors"
+                    title="Editar"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5h-2a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-2m-6.586-9.414a2 2 0 112.828 2.828L11 12l-3 1 1-3 6.414-6.414z"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={event => {
+                      event.stopPropagation()
+                      onSelect(text.id)
+                      onDeleteSelected()
+                    }}
+                    className="p-1.5 rounded hover:bg-red-500/20 text-red-400/70 hover:text-red-400 transition-colors"
+                    title="Eliminar"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             ))}
-          </div>
-        </div>
-      )}
-
-      {/* Editor del texto seleccionado */}
-      {selectedText && (
-        <div className="p-4 bg-slate-800/50 rounded-lg border border-orange-500/30">
-          <h4 className="text-xs font-semibold text-orange-300/70 uppercase tracking-wide mb-4">
-            Editor
-          </h4>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block mb-1.5 text-sm font-medium text-white">
-                Etiqueta
-              </label>
-              <input
-                type="text"
-                value={selectedText.label || ''}
-                onChange={e => onChangeSelected({ label: e.target.value })}
-                placeholder="Ej: Nombre, Fecha, Curso..."
-                className="w-full p-2.5 bg-slate-900/50 border border-orange-500/30 rounded-lg text-sm text-white placeholder:text-orange-200/40 focus:border-orange-500/50 focus:outline-none focus:ring-1 focus:ring-orange-500/50"
-              />
-            </div>
-
-            <Button
-              onClick={onDeleteSelected}
-              variant="danger"
-              size="md"
-              fullWidth
-            >
-              Eliminar texto
-            </Button>
           </div>
         </div>
       )}
@@ -106,6 +158,19 @@ export default function CertificateForm({
           Aún no hay textos. Agrega uno para empezar.
         </p>
       )}
+
+      <Modal
+        isOpen={isEditModalOpen}
+        title="Editar etiqueta"
+        onClose={handleCloseEdit}
+      >
+        <EditLabelModal
+          label={editLabel}
+          onChange={setEditLabel}
+          onClose={handleCloseEdit}
+          onSave={handleSaveLabel}
+        />
+      </Modal>
     </div>
   )
 }
