@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import BulkExportModal from '../components/BulkExportModal'
 import CertificateListContent from '../components/CertificateListContent'
 import CertificateListEmptyState from '../components/CertificateListEmptyState'
 import CertificateListHeader from '../components/CertificateListHeader'
@@ -21,6 +22,7 @@ export default function CertificateList() {
   const { download: downloadCertificate } = useDownloadCertificate()
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
   const [isExcelModalOpen, setIsExcelModalOpen] = useState(false)
+  const [isBulkExportModalOpen, setIsBulkExportModalOpen] = useState(false)
 
   const handleCreateNew = () => {
     const newCertificate: Certificate = {
@@ -76,6 +78,7 @@ export default function CertificateList() {
           certificateCount={certificates.length}
           onTemplateClick={() => setIsTemplateModalOpen(true)}
           onExcelClick={() => setIsExcelModalOpen(true)}
+          onBulkExportClick={() => setIsBulkExportModalOpen(true)}
           onNewClick={handleCreateNew}
           certificates={certificates}
         />
@@ -107,6 +110,17 @@ export default function CertificateList() {
         onClose={() => setIsExcelModalOpen(false)}
       >
         <ExcelModal onClose={() => setIsExcelModalOpen(false)} />
+      </Modal>
+
+      <Modal
+        isOpen={isBulkExportModalOpen}
+        title="Exportar certificados"
+        onClose={() => setIsBulkExportModalOpen(false)}
+      >
+        <BulkExportModal
+          certificates={certificates}
+          onClose={() => setIsBulkExportModalOpen(false)}
+        />
       </Modal>
     </div>
   )

@@ -5,6 +5,7 @@ export default function CertificateListHeader({
   certificateCount,
   onTemplateClick,
   onExcelClick,
+  onBulkExportClick,
   onNewClick,
   certificates,
 }: CertificateListHeaderProps) {
@@ -24,6 +25,7 @@ export default function CertificateListHeader({
           certificates={certificates}
           onTemplateClick={onTemplateClick}
           onExcelClick={onExcelClick}
+          onBulkExportClick={onBulkExportClick}
           onNewClick={onNewClick}
         />
       </div>
