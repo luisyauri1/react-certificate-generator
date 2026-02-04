@@ -71,7 +71,7 @@ export default function BulkExportModal({
               y: text.y,
               fontSize: text.fontSize,
               fill: text.color,
-              fontFamily: 'Arial',
+              fontFamily: text.fontFamily || 'Roboto',
             })
             layer.add(konvaText)
           })

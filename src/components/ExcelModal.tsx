@@ -11,6 +11,10 @@ export default function ExcelModal({ onClose }: ExcelModalProps) {
     state => state.certificates.globalTemplate
   )
   const [isLoading, setIsLoading] = useState(false)
+  const [pendingCertificates, setPendingCertificates] = useState<Certificate[]>(
+    []
+  )
+  const [fileName, setFileName] = useState<string | null>(null)
 
   const handleExcelUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -81,12 +85,8 @@ export default function ExcelModal({ onClose }: ExcelModalProps) {
         return
       }
 
-      dispatch(addMultipleCertificates(newCertificates))
-
-      alert(
-        `✓ ${newCertificates.length} certificado${newCertificates.length !== 1 ? 's' : ''} creado${newCertificates.length !== 1 ? 's' : ''} desde Excel`
-      )
-      onClose()
+      setPendingCertificates(newCertificates)
+      setFileName(file.name)
     } catch (error) {
       console.error('Error al procesar Excel:', error)
       alert('Error al procesar el archivo Excel')
@@ -94,6 +94,16 @@ export default function ExcelModal({ onClose }: ExcelModalProps) {
       setIsLoading(false)
       e.target.value = ''
     }
+  }
+
+  const handleCreateCertificates = () => {
+    if (pendingCertificates.length === 0) return
+
+    dispatch(addMultipleCertificates(pendingCertificates))
+    alert(
+      `✓ ${pendingCertificates.length} certificado${pendingCertificates.length !== 1 ? 's' : ''} creado${pendingCertificates.length !== 1 ? 's' : ''} desde Excel`
+    )
+    onClose()
   }
 
   return (
@@ -105,21 +115,43 @@ export default function ExcelModal({ onClose }: ExcelModalProps) {
           un certificado.
         </p>
 
-        <label className="block">
-          <input
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={handleExcelUpload}
-            disabled={isLoading}
-            className="hidden"
-          />
-          <div className="flex items-center justify-center gap-2 border-2 border-dashed border-orange-500/30 rounded-lg p-4 cursor-pointer hover:border-orange-500/50 hover:bg-slate-800/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        {!fileName ? (
+          <label className="block">
+            <input
+              type="file"
+              accept=".xlsx,.xls"
+              onChange={handleExcelUpload}
+              disabled={isLoading}
+              className="hidden"
+            />
+            <div className="flex items-center justify-center gap-2 border-2 border-dashed border-orange-500/30 rounded-lg p-4 cursor-pointer hover:border-orange-500/50 hover:bg-slate-800/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              <FileSpreadsheet size={20} className="text-orange-400" />
+              <span className="text-sm text-white font-medium">
+                {isLoading ? 'Procesando...' : 'Cargar archivo Excel'}
+              </span>
+            </div>
+          </label>
+        ) : (
+          <div className="flex items-center gap-2 bg-slate-800/50 rounded-lg p-3 border border-orange-500/30">
             <FileSpreadsheet size={20} className="text-orange-400" />
-            <span className="text-sm text-white font-medium">
-              {isLoading ? 'Procesando...' : 'Cargar archivo Excel'}
+            <span className="text-sm text-white font-medium flex-1">
+              {fileName}
             </span>
+            <span className="text-xs text-green-400">
+              {pendingCertificates.length} certificado
+              {pendingCertificates.length !== 1 ? 's' : ''}
+            </span>
+            <button
+              onClick={() => {
+                setFileName(null)
+                setPendingCertificates([])
+              }}
+              className="text-red-400 hover:text-red-300 text-sm font-medium px-2 py-1 hover:bg-red-500/10 rounded transition-colors"
+            >
+              Limpiar
+            </button>
           </div>
-        </label>
+        )}
 
         <div className="mt-4 bg-orange-500/10 rounded-lg p-3 border border-orange-500/20">
           <p className="text-sm text-orange-300 font-medium mb-2">
@@ -139,6 +171,16 @@ export default function ExcelModal({ onClose }: ExcelModalProps) {
           está configurada.
         </p>
       </div>
+
+      {pendingCertificates.length > 0 && (
+        <button
+          onClick={handleCreateCertificates}
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Procesando...' : 'Crear certificados'}
+        </button>
+      )}
     </div>
   )
 }
