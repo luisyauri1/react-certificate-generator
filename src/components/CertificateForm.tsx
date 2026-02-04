@@ -57,7 +57,7 @@ export default function CertificateForm({
           <h4 className="text-xs font-semibold text-orange-300/70 uppercase tracking-wide">
             Textos ({texts.length})
           </h4>
-          <div className="space-y-1.5 max-h-128 overflow-y-auto pr-1">
+          <div className="space-y-1.5">
             {texts.map(text => (
               <div
                 key={text.id}

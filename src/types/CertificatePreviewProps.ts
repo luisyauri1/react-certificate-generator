@@ -8,4 +8,5 @@ export interface CertificatePreviewProps {
   onUpdatePosition: (id: string, x: number, y: number) => void
   onChangeSelected: (updates: Partial<TextElement>) => void
   stageRef: React.RefObject<import('konva/lib/Stage').Stage | null>
+  onExport: () => void
 }

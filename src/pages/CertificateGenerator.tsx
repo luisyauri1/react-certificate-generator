@@ -105,7 +105,6 @@ export default function CertificateGenerator() {
 
   return (
     <div className="h-full flex overflow-hidden">
-      {/* Panel izquierdo: Controles */}
       <Sidebar
         imageUrl={imageUrl}
         imageDimensions={imageDimensions}
@@ -116,11 +115,9 @@ export default function CertificateGenerator() {
         onChangeSelected={handleChangeSelected}
         onAddText={handleAddText}
         onDeleteSelected={handleDeleteSelected}
-        onExport={handleExportPDF}
       />
 
-      {/* Panel derecho: Canvas preview - centrado */}
-      <div className="flex-1 bg-slate-900 flex items-center justify-center overflow-auto">
+      <div className="flex-1 bg-slate-900 overflow-auto">
         {imageUrl ? (
           <CertificatePreview
             imageUrl={imageUrl}
@@ -130,6 +127,7 @@ export default function CertificateGenerator() {
             onUpdatePosition={handleUpdatePosition}
             onChangeSelected={handleChangeSelected}
             stageRef={stageRef}
+            onExport={handleExportPDF}
           />
         ) : (
           <EmptyState />

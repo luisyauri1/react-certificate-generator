@@ -2,7 +2,6 @@ import { useState } from 'react'
 import type { TextElement } from '../types'
 import CertificateForm from './CertificateForm'
 import DimensionModal from './DimensionModal'
-import ExportButton from './ExportButton'
 import TemplateUploadButton from './TemplateUploadButton'
 
 interface SidebarProps {
@@ -15,7 +14,6 @@ interface SidebarProps {
   onChangeSelected: (updates: Partial<TextElement>) => void
   onAddText: () => void
   onDeleteSelected: () => void
-  onExport: () => void
 }
 
 export default function Sidebar({
@@ -28,7 +26,6 @@ export default function Sidebar({
   onChangeSelected,
   onAddText,
   onDeleteSelected,
-  onExport,
 }: SidebarProps) {
   const [isInfoOpen, setIsInfoOpen] = useState(false)
 
@@ -69,24 +66,6 @@ export default function Sidebar({
             hasImage={!!imageUrl}
           />
         </div>
-      </div>
-
-      <div className="mt-auto p-6 pt-4 border-t border-orange-500/20 bg-slate-900/50 space-y-3">
-        <div className="flex items-center justify-center gap-2">
-          <div
-            className={`w-2 h-2 rounded-full ${
-              imageUrl ? 'bg-green-500' : 'bg-orange-400/50'
-            }`}
-          />
-          <span
-            className={`text-xs ${
-              imageUrl ? 'text-green-400' : 'text-orange-400/60'
-            }`}
-          >
-            {imageUrl ? 'Listo para exportar' : 'Sin plantilla'}
-          </span>
-        </div>
-        <ExportButton onExport={onExport} disabled={!imageUrl} />
       </div>
 
       <DimensionModal
