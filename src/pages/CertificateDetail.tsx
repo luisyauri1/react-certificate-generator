@@ -1,9 +1,8 @@
 import { jsPDF } from 'jspdf'
 import type { Stage as KonvaStage } from 'konva/lib/Stage'
-import { ArrowLeft, ChevronLeft, ChevronRight, Save } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import Button from '../components/Button'
+import CertificateDetailHeader from '../components/CertificateDetailHeader'
 import CertificatePreview from '../components/CertificatePreview'
 import EmptyState from '../components/EmptyState'
 import Sidebar from '../components/Sidebar'
@@ -217,74 +216,22 @@ export default function CertificateDetail() {
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
-      {/* Header con nombre editable y botones */}
-      <div className="bg-slate-900/50 backdrop-blur-sm border-b border-orange-500/20 px-8 py-5 flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/grupo')}
-            className="p-0!"
-          >
-            <ArrowLeft size={18} strokeWidth={1.5} />
-          </Button>
+      <CertificateDetailHeader
+        certificateName={certificateName}
+        isEditing={isEditing}
+        currentIndex={currentIndex}
+        totalCertificates={certificates.length}
+        hasPrevious={hasPrevious}
+        hasNext={hasNext}
+        onNameChange={handleNameChange}
+        onNameBlur={handleNameBlur}
+        onSetIsEditing={setIsEditing}
+        onBack={() => navigate('/grupo')}
+        onPrevious={handlePrevious}
+        onNext={handleNext}
+        onSave={handleSave}
+      />
 
-          {isEditing ? (
-            <input
-              type="text"
-              value={certificateName}
-              onChange={handleNameChange}
-              onBlur={handleNameBlur}
-              onKeyDown={e => e.key === 'Enter' && handleNameBlur()}
-              className="text-base md:text-lg font-semibold text-white bg-transparent border-b border-orange-500/50 focus:outline-none focus:border-orange-500 px-0"
-              autoFocus
-            />
-          ) : (
-            <h1
-              onClick={() => setIsEditing(true)}
-              className="text-base md:text-lg font-semibold text-white cursor-pointer hover:text-orange-300"
-            >
-              {certificateName}
-            </h1>
-          )}
-        </div>
-
-        <div className="flex items-center gap-3">
-          {/* Navegación entre certificados */}
-          <div className="flex items-center gap-1 border border-orange-500/30 rounded-lg overflow-hidden bg-slate-800/30">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handlePrevious}
-              disabled={!hasPrevious}
-              title="Certificado anterior"
-              className="p-1.5! rounded-none"
-            >
-              <ChevronLeft size={16} strokeWidth={1.5} />
-            </Button>
-            <div className="px-3 text-xs text-orange-300/70 border-x border-orange-500/30">
-              {currentIndex + 1} / {certificates.length}
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleNext}
-              disabled={!hasNext}
-              title="Siguiente certificado"
-              className="p-1.5! rounded-none"
-            >
-              <ChevronRight size={16} strokeWidth={1.5} />
-            </Button>
-          </div>
-
-          <Button variant="primary" size="md" onClick={handleSave}>
-            <Save size={14} strokeWidth={1.5} />
-            Guardar
-          </Button>
-        </div>
-      </div>
-
-      {/* Editor */}
       <div className="flex-1 flex overflow-hidden">
         <Sidebar
           imageUrl={imageUrl}
