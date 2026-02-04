@@ -212,7 +212,7 @@ export default function CertificateDetail() {
             variant="ghost"
             size="sm"
             onClick={() => navigate('/grupo')}
-            className="!p-0"
+            className="p-0!"
           >
             <ArrowLeft size={18} strokeWidth={1.5} />
           </Button>
@@ -246,7 +246,7 @@ export default function CertificateDetail() {
               onClick={handlePrevious}
               disabled={!hasPrevious}
               title="Certificado anterior"
-              className="!p-1.5 rounded-none"
+              className="p-1.5! rounded-none"
             >
               <ChevronLeft size={16} strokeWidth={1.5} />
             </Button>
@@ -259,7 +259,7 @@ export default function CertificateDetail() {
               onClick={handleNext}
               disabled={!hasNext}
               title="Siguiente certificado"
-              className="!p-1.5 rounded-none"
+              className="p-1.5! rounded-none"
             >
               <ChevronRight size={16} strokeWidth={1.5} />
             </Button>

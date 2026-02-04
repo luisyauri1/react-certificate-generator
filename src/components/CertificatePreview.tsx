@@ -98,7 +98,7 @@ export default function CertificatePreview({
             variant="secondary"
             size="sm"
             onClick={handleZoomOut}
-            className="!p-2"
+            className="p-2!"
             title="Alejar (Zoom Out)"
           >
             <ZoomOut className="w-4 h-4" />
@@ -107,7 +107,7 @@ export default function CertificatePreview({
             variant="secondary"
             size="sm"
             onClick={handleResetZoom}
-            className="!p-2"
+            className="p-2!"
             title="Restablecer zoom"
           >
             <RotateCcw className="w-4 h-4" />
@@ -116,7 +116,7 @@ export default function CertificatePreview({
             variant="secondary"
             size="sm"
             onClick={handleZoomIn}
-            className="!p-2"
+            className="p-2!"
             title="Acercar (Zoom In)"
           >
             <ZoomIn className="w-4 h-4" />

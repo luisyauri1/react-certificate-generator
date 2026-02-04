@@ -59,7 +59,7 @@ export default function TemplateModal() {
               variant="ghost"
               size="sm"
               onClick={handleRemoveTemplate}
-              className="absolute top-2 right-2 !p-1.5 bg-slate-800 rounded-full border border-orange-500/30"
+              className="absolute top-2 right-2 p-1.5! bg-slate-800 rounded-full border border-orange-500/30"
             >
               <X size={16} className="text-orange-400" />
             </Button>

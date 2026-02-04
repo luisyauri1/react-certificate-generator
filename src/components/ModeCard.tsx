@@ -12,7 +12,7 @@ export default function ModeCard({
       variant="outline"
       size="lg"
       onClick={onClick}
-      className="group !p-8 md:!p-10 !h-auto !flex-col items-center text-center gap-5 md:gap-6"
+      className="group p-8! md:p-10! h-auto! flex-col! items-center text-center gap-5 md:gap-6"
     >
       <div className="w-20 h-20 md:w-24 md:h-24 bg-orange-600/20 group-hover:bg-orange-600 rounded-xl flex items-center justify-center transition-all duration-300">
         <Icon

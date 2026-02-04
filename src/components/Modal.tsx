@@ -22,7 +22,7 @@ export default function Modal({
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-white">{title}</h2>
-          <Button variant="ghost" size="sm" onClick={onClose} className="!p-0">
+          <Button variant="ghost" size="sm" onClick={onClose} className="p-0!">
             <X size={20} />
           </Button>
         </div>

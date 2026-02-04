@@ -33,7 +33,7 @@ export default function TemplateUploadButton({
         size="md"
         fullWidth
         onClick={handleClick}
-        className="!px-0"
+        className="px-0!"
       >
         <div className="w-full p-5">
           <div className="flex items-center gap-4">

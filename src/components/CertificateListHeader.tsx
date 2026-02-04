@@ -10,7 +10,7 @@ export default function CertificateListHeader({
 }: CertificateListHeaderProps) {
   return (
     <div className="mb-8 md:mb-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-1">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-1">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
             Certificados
