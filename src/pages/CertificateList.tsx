@@ -1,11 +1,12 @@
 import { jsPDF } from 'jspdf'
 import Konva from 'konva'
-import { Download, Edit, FileText, Plus, Trash2 } from 'lucide-react'
+import { Download, Edit, FileText, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import Button from '../components/Button'
+import CertificateListEmptyState from '../components/CertificateListEmptyState'
+import CertificateListHeader from '../components/CertificateListHeader'
 import ExcelModal from '../components/ExcelModal'
-import GlobalActions from '../components/GlobalActions'
 import Modal from '../components/Modal'
 import TemplateModal from '../components/TemplateModal'
 import { useCertificates } from '../contexts/CertificateContext'
@@ -146,45 +147,17 @@ export default function CertificateList() {
   return (
     <div className="h-full flex flex-col p-6 md:p-12 overflow-auto">
       <div className="max-w-6xl w-full mx-auto">
-        {/* Header */}
-        <div className="mb-8 md:mb-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-1">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
-                Certificados
-              </h1>
-              <p className="text-sm md:text-base text-orange-300/60 mt-2">
-                {certificates.length}{' '}
-                {certificates.length !== 1 ? 'certificados' : 'certificado'}
-              </p>
-            </div>
-            <GlobalActions
-              certificates={certificates}
-              onTemplateClick={() => setIsTemplateModalOpen(true)}
-              onExcelClick={() => setIsExcelModalOpen(true)}
-              onNewClick={handleCreateNew}
-            />
-          </div>
-        </div>
+        <CertificateListHeader
+          certificateCount={certificates.length}
+          onTemplateClick={() => setIsTemplateModalOpen(true)}
+          onExcelClick={() => setIsExcelModalOpen(true)}
+          onNewClick={handleCreateNew}
+          certificates={certificates}
+        />
 
         {/* Lista de certificados */}
         {certificates.length === 0 ? (
-          <div className="border border-orange-500/20 bg-slate-900/30 backdrop-blur-sm rounded-xl p-12 md:p-16 text-center">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-orange-600/20 rounded-xl flex items-center justify-center">
-                <FileText className="w-8 h-8 md:w-10 md:h-10 text-orange-400 stroke-[1.5]" />
-              </div>
-              <div>
-                <p className="text-base md:text-lg text-white mb-2">
-                  No hay certificados
-                </p>
-                <Button variant="ghost" size="sm" onClick={handleCreateNew}>
-                  <Plus size={16} />
-                  Crear el primero
-                </Button>
-              </div>
-            </div>
-          </div>
+          <CertificateListEmptyState onCreateClick={handleCreateNew} />
         ) : (
           <div className="space-y-3">
             {certificates.map(certificate => (

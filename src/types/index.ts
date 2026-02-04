@@ -1,5 +1,7 @@
 export type { Certificate } from './Certificate'
 export type { CertificateFormProps } from './CertificateFormProps'
+export type { CertificateListEmptyStateProps } from './CertificateListEmptyStateProps'
+export type { CertificateListHeaderProps } from './CertificateListHeaderProps'
 export type { CertificatePreviewProps } from './CertificatePreviewProps'
 export type { CertificateTemplateSelectorProps } from './CertificateTemplateSelectorProps'
 export type { GlobalActionsProps } from './GlobalActionsProps'
