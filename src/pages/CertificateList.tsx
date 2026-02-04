@@ -1,9 +1,20 @@
 import { jsPDF } from 'jspdf'
 import Konva from 'konva'
-import { Download, Edit, FileText, Plus, Trash2 } from 'lucide-react'
+import {
+  Download,
+  Edit,
+  FileSpreadsheet,
+  FileText,
+  Image,
+  Plus,
+  Trash2,
+} from 'lucide-react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import BulkExportButton from '../components/BulkExportButton'
-import GlobalSettings from '../components/GlobalSettings'
+import ExcelModal from '../components/ExcelModal'
+import Modal from '../components/Modal'
+import TemplateModal from '../components/TemplateModal'
 import { useCertificates } from '../contexts/CertificateContext'
 import type { Certificate } from '../types'
 
@@ -11,6 +22,8 @@ export default function CertificateList() {
   const navigate = useNavigate()
   const { certificates, globalTemplate, addCertificate, deleteCertificate } =
     useCertificates()
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
+  const [isExcelModalOpen, setIsExcelModalOpen] = useState(false)
 
   // Crear nuevo certificado
   const handleCreateNew = () => {
@@ -62,19 +75,19 @@ export default function CertificateList() {
       stage.add(layer)
 
       // Cargar imagen de fondo
-      const imageObj = new Image()
+      const imageObj = document.createElement('img')
       imageObj.crossOrigin = 'Anonymous'
 
-      await new Promise((resolve, reject) => {
-        imageObj.onload = resolve
-        imageObj.onerror = reject
+      await new Promise<void>((resolve, reject) => {
+        imageObj.onload = () => resolve()
+        imageObj.onerror = () => reject(new Error('Error al cargar imagen'))
         imageObj.src = certificate.imageUrl!
       })
 
       const bgImage = new Konva.Image({
         x: 0,
         y: 0,
-        image: imageObj,
+        image: imageObj as HTMLImageElement,
         width: 3508,
         height: 2480,
       })
@@ -153,7 +166,22 @@ export default function CertificateList() {
               </p>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
-              <GlobalSettings />
+              <button
+                onClick={() => setIsTemplateModalOpen(true)}
+                className="flex cursor-pointer items-center gap-2 text-sm md:text-base text-white bg-slate-800/50 hover:bg-slate-800/70 transition-colors border border-orange-500/30 hover:border-orange-500/50 px-3 md:px-4 py-2 md:py-2.5 rounded-lg font-medium"
+              >
+                <Image size={16} strokeWidth={1.5} />
+                <span className="hidden sm:inline">Plantilla</span>
+              </button>
+
+              <button
+                onClick={() => setIsExcelModalOpen(true)}
+                className="flex cursor-pointer items-center gap-2 text-sm md:text-base text-white bg-slate-800/50 hover:bg-slate-800/70 transition-colors border border-orange-500/30 hover:border-orange-500/50 px-3 md:px-4 py-2 md:py-2.5 rounded-lg font-medium"
+              >
+                <FileSpreadsheet size={16} strokeWidth={1.5} />
+                <span className="hidden sm:inline">Excel</span>
+              </button>
+
               <BulkExportButton certificates={certificates} />
               <button
                 onClick={handleCreateNew}
@@ -282,6 +310,24 @@ export default function CertificateList() {
           </div>
         )}
       </div>
+
+      {/* Template Modal */}
+      <Modal
+        isOpen={isTemplateModalOpen}
+        title="Cargar Plantilla"
+        onClose={() => setIsTemplateModalOpen(false)}
+      >
+        <TemplateModal />
+      </Modal>
+
+      {/* Excel Modal */}
+      <Modal
+        isOpen={isExcelModalOpen}
+        title="Importar desde Excel"
+        onClose={() => setIsExcelModalOpen(false)}
+      >
+        <ExcelModal onClose={() => setIsExcelModalOpen(false)} />
+      </Modal>
     </div>
   )
 }
