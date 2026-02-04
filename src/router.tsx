@@ -27,10 +27,6 @@ export const router = createBrowserRouter(
           path: 'grupo/:id',
           element: <CertificateDetail />,
         },
-        {
-          path: 'excel',
-          element: <div>Subir Excel - Próximamente</div>,
-        },
       ],
     },
   ],
