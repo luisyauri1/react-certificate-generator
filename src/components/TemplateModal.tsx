@@ -1,10 +1,16 @@
 import { Image, X } from 'lucide-react'
-import { useCertificates } from '../contexts/CertificateContext'
+import {
+  applyTemplateToAll,
+  setGlobalTemplate,
+} from '../store/certificatesSlice'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import Button from './Button'
 
 export default function TemplateModal() {
-  const { globalTemplate, setGlobalTemplate, applyTemplateToAll } =
-    useCertificates()
+  const dispatch = useAppDispatch()
+  const globalTemplate = useAppSelector(
+    state => state.certificates.globalTemplate
+  )
 
   const handleTemplateUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -12,7 +18,7 @@ export default function TemplateModal() {
       const reader = new FileReader()
       reader.onload = () => {
         const imageUrl = reader.result as string
-        setGlobalTemplate(imageUrl)
+        dispatch(setGlobalTemplate(imageUrl))
       }
       reader.readAsDataURL(file)
     }
@@ -32,12 +38,12 @@ export default function TemplateModal() {
       return
     }
 
-    applyTemplateToAll(globalTemplate)
+    dispatch(applyTemplateToAll(globalTemplate))
     alert('Plantilla aplicada a todos los certificados')
   }
 
   const handleRemoveTemplate = () => {
-    setGlobalTemplate(null)
+    dispatch(setGlobalTemplate(null))
   }
 
   return (

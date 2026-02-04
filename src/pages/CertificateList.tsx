@@ -6,14 +6,18 @@ import CertificateListHeader from '../components/CertificateListHeader'
 import ExcelModal from '../components/ExcelModal'
 import Modal from '../components/Modal'
 import TemplateModal from '../components/TemplateModal'
-import { useCertificates } from '../contexts/CertificateContext'
 import { useDownloadCertificate } from '../hooks/useDownloadCertificate'
+import { addCertificate, deleteCertificate } from '../store/certificatesSlice'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import type { Certificate } from '../types'
 
 export default function CertificateList() {
   const navigate = useNavigate()
-  const { certificates, globalTemplate, addCertificate, deleteCertificate } =
-    useCertificates()
+  const dispatch = useAppDispatch()
+  const certificates = useAppSelector(state => state.certificates.certificates)
+  const globalTemplate = useAppSelector(
+    state => state.certificates.globalTemplate
+  )
   const { download: downloadCertificate } = useDownloadCertificate()
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
   const [isExcelModalOpen, setIsExcelModalOpen] = useState(false)
@@ -28,7 +32,7 @@ export default function CertificateList() {
       texts: [],
     }
 
-    addCertificate(newCertificate)
+    dispatch(addCertificate(newCertificate))
 
     navigate(`/grupo/${newCertificate.id}`)
   }
@@ -37,7 +41,7 @@ export default function CertificateList() {
     e.stopPropagation()
 
     if (confirm('¿Estás seguro de eliminar este certificado?')) {
-      deleteCertificate(id)
+      dispatch(deleteCertificate(id))
     }
   }
 

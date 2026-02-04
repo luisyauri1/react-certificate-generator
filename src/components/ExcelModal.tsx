@@ -1,15 +1,15 @@
 import { FileSpreadsheet } from 'lucide-react'
 import { useState } from 'react'
 import * as XLSX from 'xlsx'
-import { useCertificates } from '../contexts/CertificateContext'
-import type { Certificate, TextElement } from '../types'
-
-interface ExcelModalProps {
-  onClose: () => void
-}
+import { addMultipleCertificates } from '../store/certificatesSlice'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import type { Certificate, ExcelModalProps, TextElement } from '../types'
 
 export default function ExcelModal({ onClose }: ExcelModalProps) {
-  const { globalTemplate, addMultipleCertificates } = useCertificates()
+  const dispatch = useAppDispatch()
+  const globalTemplate = useAppSelector(
+    state => state.certificates.globalTemplate
+  )
   const [isLoading, setIsLoading] = useState(false)
 
   const handleExcelUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +81,7 @@ export default function ExcelModal({ onClose }: ExcelModalProps) {
         return
       }
 
-      addMultipleCertificates(newCertificates)
+      dispatch(addMultipleCertificates(newCertificates))
 
       alert(
         `✓ ${newCertificates.length} certificado${newCertificates.length !== 1 ? 's' : ''} creado${newCertificates.length !== 1 ? 's' : ''} desde Excel`

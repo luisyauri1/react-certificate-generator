@@ -7,13 +7,15 @@ import Button from '../components/Button'
 import CertificatePreview from '../components/CertificatePreview'
 import EmptyState from '../components/EmptyState'
 import Sidebar from '../components/Sidebar'
-import { useCertificates } from '../contexts/CertificateContext'
+import { updateCertificate } from '../store/certificatesSlice'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import type { Certificate, TextElement } from '../types'
 
 export default function CertificateDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { certificates, updateCertificate } = useCertificates()
+  const dispatch = useAppDispatch()
+  const certificates = useAppSelector(state => state.certificates.certificates)
 
   const [certificate, setCertificate] = useState<Certificate | null>(null)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
@@ -59,11 +61,16 @@ export default function CertificateDetail() {
   const handleSave = () => {
     if (!certificate) return
 
-    updateCertificate(certificate.id, {
-      name: certificateName,
-      imageUrl,
-      texts,
-    })
+    dispatch(
+      updateCertificate({
+        id: certificate.id,
+        updates: {
+          name: certificateName,
+          imageUrl,
+          texts,
+        },
+      })
+    )
     alert('Certificado guardado correctamente')
   }
 
@@ -72,11 +79,16 @@ export default function CertificateDetail() {
     if (!certificate) return
 
     const timer = setTimeout(() => {
-      updateCertificate(certificate.id, {
-        name: certificateName,
-        imageUrl,
-        texts,
-      })
+      dispatch(
+        updateCertificate({
+          id: certificate.id,
+          updates: {
+            name: certificateName,
+            imageUrl,
+            texts,
+          },
+        })
+      )
     }, 2000) // Auto-guardar después de 2 segundos de inactividad
 
     return () => clearTimeout(timer)
