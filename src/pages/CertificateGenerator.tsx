@@ -9,6 +9,10 @@ import type { TextElement } from '../types'
 export default function CertificateGenerator() {
   // Estado local compartido
   const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageDimensions, setImageDimensions] = useState<{
+    width: number
+    height: number
+  } | null>(null)
   const [texts, setTexts] = useState<TextElement[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
@@ -20,7 +24,15 @@ export default function CertificateGenerator() {
     if (file) {
       const reader = new FileReader()
       reader.onload = () => {
-        setImageUrl(reader.result as string)
+        const url = reader.result as string
+        setImageUrl(url)
+
+        // Obtener dimensiones originales
+        const img = new Image()
+        img.onload = () => {
+          setImageDimensions({ width: img.width, height: img.height })
+        }
+        img.src = url
       }
       reader.readAsDataURL(file)
     }
@@ -93,6 +105,7 @@ export default function CertificateGenerator() {
       {/* Panel izquierdo: Controles */}
       <Sidebar
         imageUrl={imageUrl}
+        imageDimensions={imageDimensions}
         texts={texts}
         selectedId={selectedId}
         onImageUpload={handleImageUpload}

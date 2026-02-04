@@ -1,3 +1,4 @@
+import { RotateCcw, ZoomIn, ZoomOut } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
   Group,
@@ -21,6 +22,7 @@ export default function CertificatePreview({
   stageRef,
 }: CertificatePreviewProps) {
   const [image, setImage] = useState<HTMLImageElement | null>(null)
+  const [zoom, setZoom] = useState(1)
 
   // Cargar imagen de fondo
   useEffect(() => {
@@ -38,15 +40,84 @@ export default function CertificatePreview({
   }, [imageUrl])
 
   // Escala para preview (mantener aspecto ratio)
-  const containerWidth = 700 // ancho máximo del preview
-  const scale = containerWidth / STAGE_WIDTH
-  const previewHeight = STAGE_HEIGHT * scale
+  const containerWidth = 700 // ancho base del preview
+  const baseScale = containerWidth / STAGE_WIDTH
+  const scale = baseScale * zoom
+
+  // Dimensiones dinámicas según el zoom
+  const previewWidth = containerWidth * zoom
+  const previewHeight = STAGE_HEIGHT * baseScale * zoom
+
+  // Manejar zoom con scroll del mouse
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault()
+
+    const scaleBy = 1.05
+    const oldZoom = zoom
+
+    // Zoom in/out
+    const newZoom = e.deltaY < 0 ? oldZoom * scaleBy : oldZoom / scaleBy
+
+    // Limitar zoom entre 0.3x y 5x
+    const limitedZoom = Math.max(0.3, Math.min(5, newZoom))
+
+    setZoom(limitedZoom)
+  }
+
+  // Funciones para botones de zoom
+  const handleZoomIn = () => {
+    setZoom(prev => Math.min(5, prev * 1.2))
+  }
+
+  const handleZoomOut = () => {
+    setZoom(prev => Math.max(0.3, prev / 1.2))
+  }
+
+  const handleResetZoom = () => {
+    setZoom(1)
+  }
 
   return (
     <div className="p-8">
-      <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
+      {/* Controles de zoom */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleZoomOut}
+            className="p-2 bg-slate-800/50 hover:bg-slate-800 border border-orange-500/30 hover:border-orange-500/50 text-white rounded-lg transition-colors"
+            title="Alejar (Zoom Out)"
+          >
+            <ZoomOut className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleResetZoom}
+            className="p-2 bg-slate-800/50 hover:bg-slate-800 border border-orange-500/30 hover:border-orange-500/50 text-white rounded-lg transition-colors"
+            title="Restablecer zoom"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleZoomIn}
+            className="p-2 bg-slate-800/50 hover:bg-slate-800 border border-orange-500/30 hover:border-orange-500/50 text-white rounded-lg transition-colors"
+            title="Acercar (Zoom In)"
+          >
+            <ZoomIn className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="px-3 py-1.5 bg-slate-800/50 border border-orange-500/30 text-white text-sm font-mono rounded-lg">
+          {Math.round(zoom * 100)}%
+        </div>
+      </div>
+
+      <div
+        className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden inline-block"
+        onWheel={handleWheel}
+        style={{
+          cursor: 'grab',
+        }}
+      >
         <Stage
-          width={containerWidth}
+          width={previewWidth}
           height={previewHeight}
           scaleX={scale}
           scaleY={scale}

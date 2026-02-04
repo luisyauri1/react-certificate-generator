@@ -5,6 +5,7 @@ import TemplateUploadButton from './TemplateUploadButton'
 
 interface SidebarProps {
   imageUrl: string | null
+  imageDimensions: { width: number; height: number } | null
   texts: TextElement[]
   selectedId: string | null
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -17,6 +18,7 @@ interface SidebarProps {
 
 export default function Sidebar({
   imageUrl,
+  imageDimensions,
   texts,
   selectedId,
   onImageUpload,
@@ -38,6 +40,35 @@ export default function Sidebar({
             onImageUpload={onImageUpload}
             hasImage={!!imageUrl}
           />
+
+          {/* Mostrar dimensiones de la imagen */}
+          {imageDimensions && (
+            <div className="mt-3 p-3 bg-slate-800/50 rounded-lg border border-orange-500/30">
+              <div className="text-xs text-orange-300/70 font-semibold uppercase tracking-wide mb-2">
+                Dimensiones
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-orange-200/60">Original:</span>
+                  <span className="text-xs font-mono text-white">
+                    {imageDimensions.width} × {imageDimensions.height}px
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-orange-200/60">Canvas:</span>
+                  <span className="text-xs font-mono text-white">
+                    3508 × 2480px
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-orange-200/60">Formato:</span>
+                  <span className="text-xs font-mono text-white">
+                    A4 @ 300 DPI
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Sección 2: Formulario de edición */}
