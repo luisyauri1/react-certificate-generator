@@ -7,6 +7,7 @@ export default function CertificateForm({
   onChangeSelected,
   onAddText,
   onDeleteSelected,
+  hasImage,
 }: CertificateFormProps) {
   const selectedText = texts.find(t => t.id === selectedId)
 
@@ -15,7 +16,11 @@ export default function CertificateForm({
       {/* Botón agregar texto */}
       <button
         onClick={onAddText}
-        className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-semibold transition-colors"
+        disabled={!hasImage}
+        className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-semibold transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300"
+        title={
+          !hasImage ? 'Primero carga una plantilla' : 'Agregar nuevo texto'
+        }
       >
         + Agregar texto
       </button>

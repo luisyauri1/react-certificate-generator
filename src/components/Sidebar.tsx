@@ -52,12 +52,28 @@ export default function Sidebar({
             onChangeSelected={onChangeSelected}
             onAddText={onAddText}
             onDeleteSelected={onDeleteSelected}
+            hasImage={!!imageUrl}
           />
         </div>
       </div>
 
       {/* Botón de exportación - sticky al fondo */}
-      <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-white">
+      <div className="mt-auto p-6 pt-4 border-t border-gray-200 bg-white space-y-3">
+        {/* Etiqueta de estado */}
+        <div className="flex items-center justify-center gap-2">
+          <div
+            className={`w-2 h-2 rounded-full ${
+              imageUrl ? 'bg-green-500' : 'bg-gray-300'
+            }`}
+          />
+          <span
+            className={`text-xs ${
+              imageUrl ? 'text-green-600' : 'text-gray-400'
+            }`}
+          >
+            {imageUrl ? 'Listo para exportar' : 'Sin plantilla'}
+          </span>
+        </div>
         <ExportButton onExport={onExport} disabled={!imageUrl} />
       </div>
     </div>

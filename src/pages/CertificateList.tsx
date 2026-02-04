@@ -1,6 +1,8 @@
 import { FileText, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import BulkExportButton from '../components/BulkExportButton'
+import GlobalSettings from '../components/GlobalSettings'
 import type { Certificate } from '../types'
 
 export default function CertificateList() {
@@ -20,12 +22,15 @@ export default function CertificateList() {
 
   // Crear nuevo certificado
   const handleCreateNew = () => {
+    // Obtener plantilla global si existe
+    const globalTemplate = localStorage.getItem('globalTemplate')
+
     const newCertificate: Certificate = {
       id: `cert-${Date.now()}`,
       name: `Certificado ${certificates.length + 1}`,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      imageUrl: null,
+      imageUrl: globalTemplate || null,
       texts: [],
     }
 
@@ -75,13 +80,20 @@ export default function CertificateList() {
                 {certificates.length !== 1 ? 'certificados' : 'certificado'}
               </p>
             </div>
-            <button
-              onClick={handleCreateNew}
-              className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors border border-gray-200 px-4 py-2 rounded hover:border-gray-300"
-            >
-              <Plus size={16} />
-              Nuevo
-            </button>
+            <div className="flex items-center gap-3">
+              <GlobalSettings
+                certificates={certificates}
+                onUpdate={setCertificates}
+              />
+              <BulkExportButton certificates={certificates} />
+              <button
+                onClick={handleCreateNew}
+                className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors border border-gray-200 px-4 py-2 rounded hover:border-gray-300"
+              >
+                <Plus size={16} />
+                Nuevo
+              </button>
+            </div>
           </div>
         </div>
 
@@ -126,9 +138,28 @@ export default function CertificateList() {
 
                   {/* Info */}
                   <div className="flex-1">
-                    <h3 className="text-sm font-normal text-gray-800 mb-1 truncate">
-                      {certificate.name}
-                    </h3>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-sm font-normal text-gray-800 truncate">
+                        {certificate.name}
+                      </h3>
+                      {/* Etiqueta de estado */}
+                      <div
+                        className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-xs ${
+                          certificate.imageUrl
+                            ? 'bg-green-50 text-green-600'
+                            : 'bg-gray-100 text-gray-400'
+                        }`}
+                      >
+                        <div
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            certificate.imageUrl
+                              ? 'bg-green-500'
+                              : 'bg-gray-400'
+                          }`}
+                        />
+                        {certificate.imageUrl ? 'Listo' : 'Sin plantilla'}
+                      </div>
+                    </div>
                     <p className="text-xs text-gray-400">
                       {formatDate(certificate.updatedAt)}
                     </p>

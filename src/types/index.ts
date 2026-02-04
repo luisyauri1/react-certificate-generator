@@ -37,6 +37,7 @@ export interface CertificateFormProps {
   onChangeSelected: (updates: Partial<TextElement>) => void
   onAddText: () => void
   onDeleteSelected: () => void
+  hasImage: boolean
 }
 
 // Props para CertificateTemplateSelector
