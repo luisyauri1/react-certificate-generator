@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import type { TextElement } from '../types'
 import CertificateForm from './CertificateForm'
+import DimensionModal from './DimensionModal'
 import ExportButton from './ExportButton'
 import TemplateUploadButton from './TemplateUploadButton'
 
@@ -28,6 +30,8 @@ export default function Sidebar({
   onDeleteSelected,
   onExport,
 }: SidebarProps) {
+  const [isInfoOpen, setIsInfoOpen] = useState(false)
+
   return (
     <div className="w-64 lg:w-72 xl:w-80 bg-slate-900/50 backdrop-blur-sm border-r border-orange-500/20 flex flex-col overflow-y-auto">
       <div className="p-6 space-y-6">
@@ -41,33 +45,15 @@ export default function Sidebar({
             hasImage={!!imageUrl}
           />
 
-          {/* Mostrar dimensiones de la imagen */}
+          {/* Texto para ver más información */}
           {imageDimensions && (
-            <div className="mt-3 p-3 bg-slate-800/50 rounded-lg border border-orange-500/30">
-              <div className="text-xs text-orange-300/70 font-semibold uppercase tracking-wide mb-2">
-                Dimensiones
-              </div>
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-orange-200/60">Original:</span>
-                  <span className="text-xs font-mono text-white">
-                    {imageDimensions.width} × {imageDimensions.height}px
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-orange-200/60">Canvas:</span>
-                  <span className="text-xs font-mono text-white">
-                    3508 × 2480px
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-orange-200/60">Formato:</span>
-                  <span className="text-xs font-mono text-white">
-                    A4 @ 300 DPI
-                  </span>
-                </div>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => setIsInfoOpen(true)}
+              className="mt-3 text-xs text-orange-300/80 hover:text-orange-200 underline underline-offset-4"
+            >
+              Ver más información
+            </button>
           )}
         </div>
 
@@ -107,6 +93,12 @@ export default function Sidebar({
         </div>
         <ExportButton onExport={onExport} disabled={!imageUrl} />
       </div>
+
+      <DimensionModal
+        isOpen={isInfoOpen}
+        onClose={() => setIsInfoOpen(false)}
+        imageDimensions={imageDimensions}
+      />
     </div>
   )
 }

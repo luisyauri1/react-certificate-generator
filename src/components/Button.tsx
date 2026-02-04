@@ -1,4 +1,4 @@
-import type { ButtonProps, ButtonVariant } from './types/ButtonProps'
+import type { ButtonProps, ButtonVariant } from '../types/ButtonProps'
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-orange-600 text-white hover:bg-orange-500 border-0 font-medium',
