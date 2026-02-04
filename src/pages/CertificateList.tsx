@@ -1,30 +1,17 @@
 import { FileText, Plus, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import BulkExportButton from '../components/BulkExportButton'
 import GlobalSettings from '../components/GlobalSettings'
+import { useCertificates } from '../contexts/CertificateContext'
 import type { Certificate } from '../types'
 
 export default function CertificateList() {
   const navigate = useNavigate()
-  const [certificates, setCertificates] = useState<Certificate[]>(() => {
-    // Cargar certificados del localStorage
-    const stored = localStorage.getItem('certificates')
-    if (stored) {
-      try {
-        return JSON.parse(stored)
-      } catch (error) {
-        console.error('Error al cargar certificados:', error)
-      }
-    }
-    return []
-  })
+  const { certificates, globalTemplate, addCertificate, deleteCertificate } =
+    useCertificates()
 
   // Crear nuevo certificado
   const handleCreateNew = () => {
-    // Obtener plantilla global si existe
-    const globalTemplate = localStorage.getItem('globalTemplate')
-
     const newCertificate: Certificate = {
       id: `cert-${Date.now()}`,
       name: `Certificado ${certificates.length + 1}`,
@@ -34,9 +21,7 @@ export default function CertificateList() {
       texts: [],
     }
 
-    const updatedCertificates = [...certificates, newCertificate]
-    localStorage.setItem('certificates', JSON.stringify(updatedCertificates))
-    setCertificates(updatedCertificates)
+    addCertificate(newCertificate)
 
     // Navegar al editor del nuevo certificado
     navigate(`/grupo/${newCertificate.id}`)
@@ -47,9 +32,7 @@ export default function CertificateList() {
     e.stopPropagation()
 
     if (confirm('¿Estás seguro de eliminar este certificado?')) {
-      const updatedCertificates = certificates.filter(c => c.id !== id)
-      localStorage.setItem('certificates', JSON.stringify(updatedCertificates))
-      setCertificates(updatedCertificates)
+      deleteCertificate(id)
     }
   }
 
@@ -81,10 +64,7 @@ export default function CertificateList() {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <GlobalSettings
-                certificates={certificates}
-                onUpdate={setCertificates}
-              />
+              <GlobalSettings />
               <BulkExportButton certificates={certificates} />
               <button
                 onClick={handleCreateNew}

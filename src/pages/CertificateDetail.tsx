@@ -6,14 +6,15 @@ import { useNavigate, useParams } from 'react-router'
 import CertificatePreview from '../components/CertificatePreview'
 import EmptyState from '../components/EmptyState'
 import Sidebar from '../components/Sidebar'
+import { useCertificates } from '../contexts/CertificateContext'
 import type { Certificate, TextElement } from '../types'
 
 export default function CertificateDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { certificates, updateCertificate } = useCertificates()
 
   const [certificate, setCertificate] = useState<Certificate | null>(null)
-  const [certificates, setCertificates] = useState<Certificate[]>([])
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [texts, setTexts] = useState<TextElement[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -27,70 +28,38 @@ export default function CertificateDetail() {
   const hasPrevious = currentIndex > 0
   const hasNext = currentIndex < certificates.length - 1
 
-  // Cargar certificado del localStorage
+  // Cargar certificado del contexto
   useEffect(() => {
     if (!id) {
       navigate('/grupo')
       return
     }
 
-    const stored = localStorage.getItem('certificates')
-    if (stored) {
-      try {
-        const allCertificates: Certificate[] = JSON.parse(stored)
-        setCertificates(allCertificates)
-        const found = allCertificates.find(c => c.id === id)
+    const found = certificates.find(c => c.id === id)
 
-        if (found) {
-          setCertificate(found)
-          setImageUrl(found.imageUrl)
-          setTexts(found.texts)
-          setCertificateName(found.name)
-          setSelectedId(null) // Reset selection al cambiar de certificado
-        } else {
-          alert('Certificado no encontrado')
-          navigate('/grupo')
-        }
-      } catch (error) {
-        console.error('Error al cargar certificado:', error)
-        navigate('/grupo')
-      }
+    if (found) {
+      setCertificate(found)
+      setImageUrl(found.imageUrl)
+      setTexts(found.texts)
+      setCertificateName(found.name)
+      setSelectedId(null) // Reset selection al cambiar de certificado
     } else {
+      alert('Certificado no encontrado')
       navigate('/grupo')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
+  }, [id, certificates])
 
-  // Guardar cambios en localStorage
+  // Guardar cambios
   const handleSave = () => {
     if (!certificate) return
 
-    const stored = localStorage.getItem('certificates')
-    if (stored) {
-      try {
-        const certificates: Certificate[] = JSON.parse(stored)
-        const updatedCertificates = certificates.map(c =>
-          c.id === certificate.id
-            ? {
-                ...c,
-                name: certificateName,
-                imageUrl,
-                texts,
-                updatedAt: new Date().toISOString(),
-              }
-            : c
-        )
-
-        localStorage.setItem(
-          'certificates',
-          JSON.stringify(updatedCertificates)
-        )
-        alert('Certificado guardado correctamente')
-      } catch (error) {
-        console.error('Error al guardar certificado:', error)
-        alert('Error al guardar el certificado')
-      }
-    }
+    updateCertificate(certificate.id, {
+      name: certificateName,
+      imageUrl,
+      texts,
+    })
+    alert('Certificado guardado correctamente')
   }
 
   // Auto-guardar cada vez que cambian los datos
@@ -98,29 +67,11 @@ export default function CertificateDetail() {
     if (!certificate) return
 
     const timer = setTimeout(() => {
-      const stored = localStorage.getItem('certificates')
-      if (stored) {
-        try {
-          const certificates: Certificate[] = JSON.parse(stored)
-          const updatedCertificates = certificates.map(c =>
-            c.id === certificate.id
-              ? {
-                  ...c,
-                  name: certificateName,
-                  imageUrl,
-                  texts,
-                  updatedAt: new Date().toISOString(),
-                }
-              : c
-          )
-          localStorage.setItem(
-            'certificates',
-            JSON.stringify(updatedCertificates)
-          )
-        } catch (error) {
-          console.error('Error al guardar automáticamente:', error)
-        }
-      }
+      updateCertificate(certificate.id, {
+        name: certificateName,
+        imageUrl,
+        texts,
+      })
     }, 2000) // Auto-guardar después de 2 segundos de inactividad
 
     return () => clearTimeout(timer)

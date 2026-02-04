@@ -1,21 +1,17 @@
 import { Check, FileSpreadsheet, Image, Settings, X } from 'lucide-react'
 import { useState } from 'react'
 import * as XLSX from 'xlsx'
+import { useCertificates } from '../contexts/CertificateContext'
 import type { Certificate, TextElement } from '../types'
 
-interface GlobalSettingsProps {
-  certificates: Certificate[]
-  onUpdate: (certificates: Certificate[]) => void
-}
-
-export default function GlobalSettings({
-  certificates,
-  onUpdate,
-}: GlobalSettingsProps) {
+export default function GlobalSettings() {
+  const {
+    globalTemplate,
+    setGlobalTemplate,
+    applyTemplateToAll,
+    addMultipleCertificates,
+  } = useCertificates()
   const [isOpen, setIsOpen] = useState(false)
-  const [globalTemplate, setGlobalTemplate] = useState<string | null>(() => {
-    return localStorage.getItem('globalTemplate')
-  })
 
   // Cargar plantilla global
   const handleTemplateUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +21,6 @@ export default function GlobalSettings({
       reader.onload = () => {
         const imageUrl = reader.result as string
         setGlobalTemplate(imageUrl)
-        localStorage.setItem('globalTemplate', imageUrl)
       }
       reader.readAsDataURL(file)
     }
@@ -46,21 +41,13 @@ export default function GlobalSettings({
       return
     }
 
-    const updatedCertificates = certificates.map(cert => ({
-      ...cert,
-      imageUrl: globalTemplate,
-      updatedAt: new Date().toISOString(),
-    }))
-
-    localStorage.setItem('certificates', JSON.stringify(updatedCertificates))
-    onUpdate(updatedCertificates)
+    applyTemplateToAll(globalTemplate)
     alert('Plantilla aplicada a todos los certificados')
   }
 
   // Remover plantilla global
   const handleRemoveTemplate = () => {
     setGlobalTemplate(null)
-    localStorage.removeItem('globalTemplate')
   }
 
   // Cargar Excel y generar certificados
@@ -132,9 +119,7 @@ export default function GlobalSettings({
       }
 
       // Agregar los nuevos certificados
-      const allCertificates = [...certificates, ...newCertificates]
-      localStorage.setItem('certificates', JSON.stringify(allCertificates))
-      onUpdate(allCertificates)
+      addMultipleCertificates(newCertificates)
 
       alert(
         `✓ ${newCertificates.length} certificado${newCertificates.length !== 1 ? 's' : ''} creado${newCertificates.length !== 1 ? 's' : ''} desde Excel`
