@@ -4,6 +4,7 @@ import BulkExportModal from '../components/BulkExportModal'
 import CertificateListContent from '../components/CertificateListContent'
 import CertificateListEmptyState from '../components/CertificateListEmptyState'
 import CertificateListHeader from '../components/CertificateListHeader'
+import CreateCertificateModal from '../components/CreateCertificateModal'
 import ExcelModal from '../components/ExcelModal'
 import Modal from '../components/Modal'
 import TemplateModal from '../components/TemplateModal'
@@ -20,14 +21,19 @@ export default function CertificateList() {
     state => state.certificates.globalTemplate
   )
   const { download: downloadCertificate } = useDownloadCertificate()
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
   const [isExcelModalOpen, setIsExcelModalOpen] = useState(false)
   const [isBulkExportModalOpen, setIsBulkExportModalOpen] = useState(false)
 
   const handleCreateNew = () => {
+    setIsCreateModalOpen(true)
+  }
+
+  const handleConfirmCreate = (name: string) => {
     const newCertificate: Certificate = {
       id: `cert-${Date.now()}`,
-      name: `Certificado ${certificates.length + 1}`,
+      name,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       imageUrl: globalTemplate || null,
@@ -35,8 +41,6 @@ export default function CertificateList() {
     }
 
     dispatch(addCertificate(newCertificate))
-
-    navigate(`/grupo/${newCertificate.id}`)
   }
 
   const handleDelete = (id: string, e: React.MouseEvent) => {
@@ -95,7 +99,6 @@ export default function CertificateList() {
           />
         )}
       </div>
-
       <Modal
         isOpen={isTemplateModalOpen}
         title="Cargar Plantilla"
@@ -103,7 +106,6 @@ export default function CertificateList() {
       >
         <TemplateModal onClose={() => setIsTemplateModalOpen(false)} />
       </Modal>
-
       <Modal
         isOpen={isExcelModalOpen}
         title="Importar desde Excel"
@@ -111,7 +113,6 @@ export default function CertificateList() {
       >
         <ExcelModal onClose={() => setIsExcelModalOpen(false)} />
       </Modal>
-
       <Modal
         isOpen={isBulkExportModalOpen}
         title="Exportar certificados"
@@ -120,6 +121,18 @@ export default function CertificateList() {
         <BulkExportModal
           certificates={certificates}
           onClose={() => setIsBulkExportModalOpen(false)}
+        />
+      </Modal>
+      <Modal
+        isOpen={isCreateModalOpen}
+        title="Crear nuevo certificado"
+        onClose={() => setIsCreateModalOpen(false)}
+      >
+        <CreateCertificateModal
+          onClose={() => setIsCreateModalOpen(false)}
+          onCreate={handleConfirmCreate}
+          certificateCount={certificates.length}
+          hasTemplate={!!globalTemplate}
         />
       </Modal>
     </div>
