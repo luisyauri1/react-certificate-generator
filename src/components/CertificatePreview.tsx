@@ -94,7 +94,7 @@ export default function CertificatePreview({
   return (
     <div className="h-full w-full flex flex-col">
       {/* Barra de herramientas superior */}
-      <div className="w-full bg-gradient-to-r from-orange-600/20 via-orange-500/15 to-orange-600/20 border-b border-orange-500/30 px-6 py-3">
+      <div className="w-full border-b border-orange-500/20 px-6 py-3">
         <div className="flex items-center justify-between gap-4">
           {selectedText ? (
             <div className="flex items-center gap-4 flex-wrap flex-1">
@@ -103,9 +103,10 @@ export default function CertificatePreview({
                 <Type className="w-4 h-4 text-orange-400" />
                 <select
                   value={selectedText.fontFamily || 'Roboto'}
-                  onChange={e =>
+                  onChange={e => {
+                    console.log('Fuente seleccionada:', e.target.value)
                     onChangeSelected({ fontFamily: e.target.value })
-                  }
+                  }}
                   className="px-2 py-1 bg-slate-900/50 border border-orange-500/30 rounded text-xs text-white focus:border-orange-500/50 focus:outline-none"
                 >
                   <option value="Roboto">Roboto</option>
@@ -117,16 +118,18 @@ export default function CertificatePreview({
               {/* Tamaño */}
               <div className="flex items-center gap-2">
                 <input
-                  type="number"
+                  type="range"
                   value={selectedText.fontSize}
                   onChange={e =>
                     onChangeSelected({ fontSize: Number(e.target.value) })
                   }
                   min="20"
                   max="200"
-                  className="w-16 px-2 py-1 bg-slate-900/50 border border-orange-500/30 rounded text-xs text-white focus:border-orange-500/50 focus:outline-none"
+                  className="w-24 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
-                <span className="text-xs text-orange-200/60">px</span>
+                <span className="text-xs text-orange-200/90 font-mono min-w-12">
+                  {selectedText.fontSize}px
+                </span>
               </div>
 
               {/* Negrita */}

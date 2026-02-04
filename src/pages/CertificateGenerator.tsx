@@ -59,6 +59,7 @@ export default function CertificateGenerator() {
   // Actualizar texto seleccionado
   const handleChangeSelected = (updates: Partial<TextElement>) => {
     if (!selectedId) return
+    console.log('Actualizando texto con:', updates)
     setTexts(texts.map(t => (t.id === selectedId ? { ...t, ...updates } : t)))
   }
 
