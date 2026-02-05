@@ -45,7 +45,7 @@ export default function CertificateGenerator() {
       id: `text-${Date.now()}`,
       text: 'Nuevo texto',
       label: 'Sin etiqueta',
-      x: 1750, // Centro aprox
+      x: 1750,
       y: 1240,
       fontSize: TEXT_DEFAULTS.fontSize,
       color: TEXT_DEFAULTS.color,

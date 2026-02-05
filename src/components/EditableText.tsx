@@ -14,6 +14,7 @@ interface EditableTextProps {
   fontFamily?: string
   lineHeight?: number
   fontStyle?: string
+  fontWeight?: string
   onChange?: (value: string) => void
   onPositionChange?: (x: number, y: number) => void
 }
@@ -29,6 +30,7 @@ export default function EditableText({
   fontFamily = TEXT_DEFAULTS.fontFamily,
   lineHeight = TEXT_DEFAULTS.lineHeight,
   fontStyle = TEXT_DEFAULTS.fontStyle,
+  fontWeight = TEXT_DEFAULTS.fontWeight,
   onChange,
   onPositionChange,
 }: EditableTextProps) {
@@ -215,6 +217,10 @@ export default function EditableText({
     })
   }, [])
 
+  // Combinar fontWeight y fontStyle para Konva
+  const combinedFontStyle =
+    `${fontWeight === 'bold' ? 'bold ' : ''}${fontStyle === 'italic' ? 'italic' : 'normal'}`.trim()
+
   return (
     <>
       <Text
@@ -225,7 +231,7 @@ export default function EditableText({
         fontSize={fontSize}
         fontFamily={fontFamily}
         lineHeight={lineHeight}
-        fontStyle={fontStyle}
+        fontStyle={combinedFontStyle}
         draggable
         width={textWidth}
         wrap="word"
