@@ -6,6 +6,7 @@ import CertificateDetailHeader from '../components/CertificateDetailHeader'
 import CertificatePreview from '../components/CertificatePreview'
 import EmptyState from '../components/EmptyState'
 import Sidebar from '../components/Sidebar'
+import { TEXT_DEFAULTS } from '../constants/textDefaults'
 import { updateCertificate } from '../store/certificatesSlice'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import type { Certificate, TextElement } from '../types'
@@ -122,11 +123,12 @@ export default function CertificateDetail() {
       label: 'Sin etiqueta',
       x: 1750,
       y: 1240,
-      fontSize: 60,
-      color: '#000000',
-      fontFamily: 'Roboto',
-      fontWeight: 'normal',
-      fontStyle: 'normal',
+      fontSize: TEXT_DEFAULTS.fontSize,
+      color: TEXT_DEFAULTS.color,
+      fontFamily: TEXT_DEFAULTS.fontFamily,
+      fontWeight: TEXT_DEFAULTS.fontWeight,
+      fontStyle: TEXT_DEFAULTS.fontStyle,
+      width: TEXT_DEFAULTS.width,
     }
     setTexts([...texts, newText])
     setSelectedId(newText.id)

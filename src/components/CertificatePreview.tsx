@@ -9,16 +9,11 @@ import {
   ZoomOut,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import {
-  Group,
-  Image as KonvaImage,
-  Layer,
-  Rect,
-  Stage,
-  Text,
-} from 'react-konva'
+import { Image as KonvaImage, Layer, Stage, Text } from 'react-konva'
+import { TEXT_DEFAULTS } from '../constants/textDefaults'
 import type { CertificatePreviewProps } from '../types'
 import Button from './Button'
+import EditableText from './EditableText'
 
 const STAGE_WIDTH = 3508
 const STAGE_HEIGHT = 2480
@@ -102,7 +97,7 @@ export default function CertificatePreview({
               <div className="flex items-center gap-2">
                 <Type className="w-4 h-4 text-orange-400" />
                 <select
-                  value={selectedText.fontFamily || 'Roboto'}
+                  value={selectedText.fontFamily || TEXT_DEFAULTS.fontFamily}
                   onChange={e => {
                     console.log('Fuente seleccionada:', e.target.value)
                     onChangeSelected({ fontFamily: e.target.value })
@@ -246,9 +241,6 @@ export default function CertificatePreview({
           <div
             className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden inline-block"
             onWheel={handleWheel}
-            style={{
-              cursor: 'grab',
-            }}
           >
             <Stage
               width={previewWidth}
@@ -292,72 +284,37 @@ export default function CertificatePreview({
 
                 {/* Textos editables */}
                 {texts.map(textItem => {
-                  const isSelected = selectedId === textItem.id
-
                   return (
-                    <Group
+                    <EditableText
                       key={textItem.id}
+                      initialText={textItem.text}
                       x={textItem.x}
                       y={textItem.y}
-                      draggable
-                      onClick={() => onSelect(textItem.id)}
-                      onTap={() => onSelect(textItem.id)}
-                      onDragEnd={e => {
-                        onUpdatePosition(
-                          textItem.id,
-                          e.target.x(),
-                          e.target.y()
-                        )
-                      }}
-                    >
-                      {/* Texto */}
-                      <Text
-                        text={textItem.text}
-                        fontSize={textItem.fontSize}
-                        fill={textItem.color}
-                        fontFamily={textItem.fontFamily || 'Roboto'}
-                        fontStyle={`${textItem.fontStyle || 'normal'}${textItem.fontWeight === 'bold' ? ' bold' : ''}`}
-                        ref={node => {
-                          if (node && isSelected) {
-                            // Obtener dimensiones reales del texto
-                            const width = node.width()
-                            const height = node.height()
-                            const padding = 6
-
-                            // Crear contorno con dimensiones exactas
-                            const rect = node
-                              .getLayer()
-                              ?.findOne(`.selection-${textItem.id}`)
-                            if (rect) {
-                              rect.position({ x: -padding, y: -padding })
-                              rect.width(width + padding * 2)
-                              rect.height(height + padding * 2)
-                            }
-                          }
-                        }}
-                      />
-
-                      {/* Contorno cuadrado elegante cuando está seleccionado */}
-                      {isSelected && (
-                        <Rect
-                          name={`selection-${textItem.id}`}
-                          x={0}
-                          y={0}
-                          width={100}
-                          height={50}
-                          stroke="#3b82f6"
-                          strokeWidth={2}
-                          cornerRadius={4}
-                          dash={[10, 5]}
-                          shadowColor="#3b82f6"
-                          shadowBlur={12}
-                          shadowOpacity={0.25}
-                          shadowOffsetX={0}
-                          shadowOffsetY={2}
-                          listening={false}
-                        />
-                      )}
-                    </Group>
+                      width={textItem.width || TEXT_DEFAULTS.width}
+                      fontSize={textItem.fontSize}
+                      fill={textItem.color}
+                      fontFamily={
+                        textItem.fontFamily || TEXT_DEFAULTS.fontFamily
+                      }
+                      fontStyle={textItem.fontStyle || TEXT_DEFAULTS.fontStyle}
+                      align={
+                        TEXT_DEFAULTS.align as
+                          | 'left'
+                          | 'center'
+                          | 'right'
+                          | 'justify'
+                      }
+                      lineHeight={TEXT_DEFAULTS.lineHeight}
+                      onChange={newText =>
+                        onChangeSelected({
+                          ...textItem,
+                          text: newText,
+                        })
+                      }
+                      onPositionChange={(newX, newY) =>
+                        onUpdatePosition(textItem.id, newX, newY)
+                      }
+                    />
                   )
                 })}
               </Layer>

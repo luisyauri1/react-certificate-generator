@@ -1,6 +1,7 @@
 import Konva from 'konva'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Text, Transformer } from 'react-konva'
+import { TEXT_DEFAULTS } from '../constants/textDefaults'
 
 interface EditableTextProps {
   initialText: string
@@ -12,20 +13,24 @@ interface EditableTextProps {
   align?: 'left' | 'center' | 'right' | 'justify'
   fontFamily?: string
   lineHeight?: number
+  fontStyle?: string
   onChange?: (value: string) => void
+  onPositionChange?: (x: number, y: number) => void
 }
 
 export default function EditableText({
   initialText,
   x,
   y,
-  width = 200,
-  fontSize = 20,
-  fill = '#e2e8f0',
-  align = 'left',
-  fontFamily = 'Roboto',
-  lineHeight = 1,
+  width = TEXT_DEFAULTS.width,
+  fontSize = TEXT_DEFAULTS.fontSize,
+  fill = TEXT_DEFAULTS.color,
+  align = TEXT_DEFAULTS.align as 'left' | 'center' | 'right' | 'justify',
+  fontFamily = TEXT_DEFAULTS.fontFamily,
+  lineHeight = TEXT_DEFAULTS.lineHeight,
+  fontStyle = TEXT_DEFAULTS.fontStyle,
   onChange,
+  onPositionChange,
 }: EditableTextProps) {
   const [text, setText] = useState(initialText)
   const [isEditing, setIsEditing] = useState(false)
@@ -180,6 +185,7 @@ export default function EditableText({
         fontSize={fontSize}
         fontFamily={fontFamily}
         lineHeight={lineHeight}
+        fontStyle={fontStyle}
         draggable
         width={textWidth}
         wrap="word"
@@ -188,6 +194,9 @@ export default function EditableText({
         onDblClick={handleTextDblClick}
         onDblTap={handleTextDblClick}
         onTransform={handleTransform}
+        onDragEnd={e => {
+          onPositionChange?.(e.target.x(), e.target.y())
+        }}
       />
       {!isEditing && (
         <Transformer

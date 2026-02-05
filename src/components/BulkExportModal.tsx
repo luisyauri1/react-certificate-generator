@@ -3,6 +3,7 @@ import JSZip from 'jszip'
 import Konva from 'konva'
 import { Download } from 'lucide-react'
 import { useState } from 'react'
+import { TEXT_DEFAULTS } from '../constants/textDefaults'
 import type { BulkExportModalProps } from '../types'
 import Button from './Button'
 
@@ -71,7 +72,7 @@ export default function BulkExportModal({
               y: text.y,
               fontSize: text.fontSize,
               fill: text.color,
-              fontFamily: text.fontFamily || 'Roboto',
+              fontFamily: text.fontFamily || TEXT_DEFAULTS.fontFamily,
             })
             layer.add(konvaText)
           })
