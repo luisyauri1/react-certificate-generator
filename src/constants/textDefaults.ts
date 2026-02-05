@@ -1,6 +1,6 @@
 export const TEXT_DEFAULTS = {
-  fontSize: 180,
-  width: 1100,
+  fontSize: 170,
+  width: 1200,
   color: '#000000',
   fontFamily: 'Roboto',
   fontStyle: 'normal' as const,

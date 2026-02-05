@@ -123,7 +123,7 @@ export default function EditableText({
     textarea.style.padding = '0px'
     textarea.style.margin = '0px'
     textarea.style.overflow = 'hidden'
-    textarea.style.background = 'rgba(15, 23, 42, 0.9)'
+    textarea.style.background = 'transparent'
     textarea.style.outline = 'none'
     textarea.style.resize = 'none'
     const lineHeight = textNode.fontSize() * textNode.lineHeight() * scale
