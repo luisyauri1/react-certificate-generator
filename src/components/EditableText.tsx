@@ -34,6 +34,7 @@ export default function EditableText({
 }: EditableTextProps) {
   const [text, setText] = useState(initialText)
   const [isEditing, setIsEditing] = useState(false)
+  const [isSelected, setIsSelected] = useState(false)
   const [textWidth, setTextWidth] = useState(width)
   const textRef = useRef<Konva.Text | null>(null)
   const trRef = useRef<Konva.Transformer | null>(null)
@@ -46,7 +47,45 @@ export default function EditableText({
     if (trRef.current && textRef.current) {
       trRef.current.nodes([textRef.current])
     }
-  }, [isEditing])
+  }, [isEditing, isSelected])
+
+  useEffect(() => {
+    const checkDeselect = (
+      e: Konva.KonvaEventObject<MouseEvent | TouchEvent>
+    ) => {
+      // Si no hay stage o no está seleccionado, no hacer nada
+      if (!isSelected || !textRef.current) return
+
+      const stage = textRef.current.getStage()
+      if (!stage) return
+
+      const clickedOnEmpty = e.target === stage
+      const clickedOnImage = e.target.getClassName?.() === 'Image'
+      const clickedOnThisText = e.target === textRef.current
+
+      // Deseleccionar si se hace click fuera de este texto
+      if ((clickedOnEmpty || clickedOnImage) && !clickedOnThisText) {
+        setIsSelected(false)
+      }
+    }
+
+    const stage = textRef.current?.getStage()
+    if (stage) {
+      stage.on('mousedown', checkDeselect)
+      stage.on('touchstart', checkDeselect)
+    }
+
+    return () => {
+      if (stage) {
+        stage.off('mousedown', checkDeselect)
+        stage.off('touchstart', checkDeselect)
+      }
+    }
+  }, [isSelected])
+
+  const handleTextClick = useCallback(() => {
+    setIsSelected(true)
+  }, [])
 
   const handleTextDblClick = useCallback(() => {
     const textNode = textRef.current
@@ -116,6 +155,7 @@ export default function EditableText({
       trRef.current?.show()
       trRef.current?.forceUpdate()
       setIsEditing(false)
+      setIsSelected(false)
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -191,6 +231,14 @@ export default function EditableText({
         wrap="word"
         fill={fill}
         align={align}
+        onClick={e => {
+          e.cancelBubble = true // Prevenir que suba al Stage
+          handleTextClick()
+        }}
+        onTap={e => {
+          e.cancelBubble = true
+          handleTextClick()
+        }}
         onDblClick={handleTextDblClick}
         onDblTap={handleTextDblClick}
         onTransform={handleTransform}
@@ -198,7 +246,7 @@ export default function EditableText({
           onPositionChange?.(e.target.x(), e.target.y())
         }}
       />
-      {!isEditing && (
+      {isSelected && !isEditing && (
         <Transformer
           ref={trRef}
           enabledAnchors={['middle-left', 'middle-right']}
